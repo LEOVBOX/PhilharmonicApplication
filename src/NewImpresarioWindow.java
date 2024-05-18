@@ -1,19 +1,14 @@
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class NewImpresarioWindow extends NewPersonWindow {
-
-    Connection connection;
-    public NewImpresarioWindow(Connection connection) {
-        super("Новый импресарио", connection);
+    public NewImpresarioWindow() {
+        super("Новый импресарио");
         okButton.addActionListener(e -> applyChanges());
-        this.connection = connection;
     }
 
-    private String createSQLQuery() {
-        return "insert into impresario (last_name, first_name, surname) values"
+    private String createInsertSQLQuery() {
+        return "INSERT INTO impresario (last_name, first_name, surname) VALUES"
                 + "('"
                 + lastName.getText() +
                 "', '"
@@ -23,11 +18,10 @@ public class NewImpresarioWindow extends NewPersonWindow {
                 "')";
     }
 
-    private void applyChanges() {
-        Statement statement = null;
-        try {
-            statement = connection.createStatement();
-            statement.executeUpdate(createSQLQuery());
+    private void addImpresario() {
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)){
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(createInsertSQLQuery());
             JOptionPane.showMessageDialog(this, "Импресарио успешно добавлен");
             dispose();
         }
@@ -35,15 +29,12 @@ public class NewImpresarioWindow extends NewPersonWindow {
             JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
                     + e.getMessage());
         }
-        finally {
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
+    }
+
+    // 1. Создаем новую строчку в таблице импресарио
+    // 2. Создаем связи последнего добавленного импресарио с жанрами в таблице impresario_genre
+    private void applyChanges() {
+        addImpresario();
 
     }
 }

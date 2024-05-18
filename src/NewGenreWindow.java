@@ -1,18 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class NewGenreWindow extends JFrame {
-    String genre;
     JTextField genreField;
 
-    Connection connection;
-    public NewGenreWindow(Connection connection) {
+    public NewGenreWindow() {
         super("New genre");
         try {
-            this.connection = connection;
             setPreferredSize(new Dimension(400, 200));
             setResizable(false);
             setLocation(0, 0);
@@ -43,7 +41,7 @@ public class NewGenreWindow extends JFrame {
 
             gbc.gridx = 1;
             JButton okButton = new JButton("ok");
-            okButton.addActionListener(e -> {applyChanges();});
+            okButton.addActionListener(e -> applyChanges());
             add(okButton, gbc);
             pack();
             setVisible(true);
@@ -61,7 +59,7 @@ public class NewGenreWindow extends JFrame {
     }
 
     private void applyChanges() {
-        try {
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)){
             Statement statement = connection.createStatement();
             statement.executeUpdate(createSQLQuery());
             JOptionPane.showMessageDialog(this, "Жанр успешно добавлен");
@@ -72,4 +70,4 @@ public class NewGenreWindow extends JFrame {
                     + e.getMessage());
         }
     }
-};
+}

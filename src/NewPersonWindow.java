@@ -1,24 +1,21 @@
-import org.checkerframework.checker.units.qual.A;
-
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class NewPersonWindow extends JFrame {
+    JPanel mainPanel;
     JTextField firstName;
     JTextField lastName;
     JTextField surname;
-
+    ArrayList<JComboBox<String>> genres;
     JButton okButton;
-
     Connection connection;
 
 
-    public NewPersonWindow(String windowName, Connection connection) {
+
+
+    public NewPersonWindow(String windowName) {
         super(windowName);
         try {
             setPreferredSize(new Dimension(400, 200));
@@ -26,7 +23,8 @@ public class NewPersonWindow extends JFrame {
             setLocation(0, 0);
             setDefaultCloseOperation(HIDE_ON_CLOSE);
             setLayout(new BorderLayout());
-            JPanel mainPanel = new JPanel(new GridBagLayout());
+            mainPanel = new JPanel(new GridBagLayout());
+            genres = new ArrayList<>();
 
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
@@ -72,18 +70,23 @@ public class NewPersonWindow extends JFrame {
             surname = new JTextField();
             mainPanel.add(surname, gbc);
 
-            gbc.gridx = 0;
+            /*gbc.gridx = 0;
             gbc.gridy = 3;
             gbc.gridwidth = 3;
 
+            initGenresPanel();
+            mainPanel.add(genresPanel, gbc);
 
-            String[] genres = getGenres();
-            JComboBox genre = new JComboBox(genres);
-            mainPanel.add(genre, gbc);
+
+            gbc.gridy = 4;
+            gbc.gridx = 0;
+
+            mainPanel.add(addGenreButton, gbc);*/
+
 
 
             gbc.gridx = 1;
-            gbc.gridy = 4;
+            gbc.gridy = 5;
             gbc.gridwidth = 1;
             JButton cancelButton = new JButton("cancel");
             cancelButton.addActionListener(e -> dispose());
@@ -101,37 +104,5 @@ public class NewPersonWindow extends JFrame {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private String[] getGenres() {
-        ResultSet resultSet = null;
-        Statement statement = null;
-        String[] genreNamesArray = null;
-        try {
-            statement = connection.createStatement();
-            ArrayList<String> genreNames = new ArrayList<>();
-            resultSet = statement.executeQuery("SELECT name FROM genre");
-
-            while (resultSet.next()) {
-                String name = resultSet.getString("name");
-                genreNames.add(name);
-            }
-
-            genreNamesArray = genreNames.toArray(new String[0]);
-
-        }
-        catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
-                    + e.getMessage());
-        }
-        finally {
-            try {
-                if (resultSet != null) resultSet.close();
-                if (statement != null) statement.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        return genreNamesArray;
     }
 }

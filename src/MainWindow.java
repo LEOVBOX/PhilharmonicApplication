@@ -1,9 +1,5 @@
-import com.sun.tools.javac.Main;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -11,30 +7,13 @@ import java.sql.SQLException;
 public class MainWindow extends JFrame {
     JButton connectButton;
     JPanel connectPanel;
-
     JPanel mainPanel;
     JButton newArtistButton;
     JButton newImpresarioButton;
     JButton newGenreButton;
-
     JButton newEventButton;
-
-    String url = "jdbc:postgresql://94.139.247.116:5432/dbstud";
-    String username = "l_shaikhutdinov";
-    String password = "Cdr2F$30M%Nk";
-
-    Connection connection;
-
-    private void closeConnection() {
-        if (connection != null) {
-            try {
-                connection.close();
-                System.out.println("Connection closed.");
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
+    JButton impresarioGenreButton;
+    JButton artistGenreButton;
 
     private void initMainPanel() {
         mainPanel = new JPanel();
@@ -45,31 +24,47 @@ public class MainWindow extends JFrame {
         gbc.gridy = 0;
 
         newArtistButton = new JButton("Добавить нового артиста");
-        newArtistButton.addActionListener(e -> new NewArtistWindow(connection));
+        newArtistButton.addActionListener(e -> new NewArtistWindow());
         mainPanel.setBackground(Color.GRAY);
         mainPanel.add(newArtistButton, gbc);
 
         gbc.gridy = 1;
         newImpresarioButton = new JButton("Добавить нового импресарио");
-        newImpresarioButton.addActionListener(e -> new NewImpresarioWindow(connection));
+        newImpresarioButton.addActionListener(e -> new NewImpresarioWindow());
         mainPanel.add(newImpresarioButton, gbc);
 
         gbc.gridy = 2;
         newGenreButton = new JButton("Добавить новый жанр");
-        newGenreButton.addActionListener(e -> new NewGenreWindow(connection));
+        newGenreButton.addActionListener(e -> new NewGenreWindow());
         mainPanel.add(newGenreButton, gbc);
 
         gbc.gridy = 3;
         newEventButton = new JButton("Добавить новое мероприятие");
         //newEventButton.addActionListener(e -> new NewEventWindow());
+
+        gbc.gridy = 4;
+        impresarioGenreButton = new JButton("Импресарио-жанр");
+        impresarioGenreButton.addActionListener(e -> new NewGenreRelationWindow("Жанр-импресарио", true));
+        mainPanel.add(impresarioGenreButton, gbc);
+
+        gbc.gridy = 5;
+        artistGenreButton = new JButton("Артист-жанр");
+        artistGenreButton.addActionListener(e -> new NewGenreRelationWindow("Жанр-артист", false));
+        mainPanel.add(artistGenreButton, gbc);
+
+
+
+
+
         this.getContentPane().add(mainPanel);
+
+
     }
 
     private void connectBD() {
-        try {
-            connectButton.setText("Подключение...");
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
+            connectButton.setBackground(Color.red);
             connectButton.setEnabled(false);
-            connection = DriverManager.getConnection(url, username, password);
             System.out.println("Successful connected");
             this.getContentPane().remove(connectPanel);
             initMainPanel();
@@ -92,7 +87,10 @@ public class MainWindow extends JFrame {
         gbc.weightx = 1;
 
         connectButton = new JButton("Подключиться к базе данных");
-        connectButton.addActionListener(e -> connectBD());
+        connectButton.addActionListener(e -> {
+            connectButton.setText("Подключение...");
+            connectBD();
+        });
         connectPanel.add(connectButton, gbc);
     }
 
@@ -104,14 +102,6 @@ public class MainWindow extends JFrame {
             add(connectPanel);
             setDefaultCloseOperation(EXIT_ON_CLOSE);
             setVisible(true);
-
-            addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    closeConnection();
-                    JOptionPane.showMessageDialog(getParent(), "Соединение успешно закрыто");
-                }
-            });
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
