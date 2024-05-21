@@ -1,15 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
+import java.sql.*;
+import java.util.HashMap;
 
 public class NewAwardWindow extends JFrame {
     JTextField nameField;
-    JComboBox eventSelector;
+    JComboBox<String> eventSelector;
 
-    JComboBox artistSelector;
+    JComboBox<String> artistSelector;
 
-    String[] eventsNames = {"Концерт1", "Концерт2", "Концерт3"};
+    HashMap<String, Integer> artists;
+    HashMap<String, Integer> events;
 
-    String[] artistNames = {"Ар1", "Ар2"};
 
     public NewAwardWindow() {
         super("New event");
@@ -20,6 +22,15 @@ public class NewAwardWindow extends JFrame {
             setDefaultCloseOperation(EXIT_ON_CLOSE);
             setLayout(new BorderLayout());
             JPanel mainPanel = new JPanel(new GridBagLayout());
+
+            try {
+                artists = GetUtilities.getNames(false);
+                events = GetUtilities.getEvents();
+            }
+            catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
+                        + e.getMessage());
+            }
 
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
@@ -50,7 +61,7 @@ public class NewAwardWindow extends JFrame {
 
             gbc.gridx = 1;
             gbc.gridwidth = 2;
-            eventSelector = new JComboBox(eventsNames);
+            eventSelector = new JComboBox<>(events.keySet().toArray(new String[0]));
             mainPanel.add(eventSelector, gbc);
 
             gbc.gridx = 0;
@@ -62,7 +73,7 @@ public class NewAwardWindow extends JFrame {
 
             gbc.gridx = 1;
             gbc.gridwidth = 2;
-            artistSelector = new JComboBox(artistNames);
+            artistSelector = new JComboBox<>(artists.keySet().toArray(new String[0]));
             mainPanel.add(artistSelector, gbc);
 
             gbc.gridx = 1;
@@ -85,5 +96,7 @@ public class NewAwardWindow extends JFrame {
             throw new RuntimeException(e);
         }
     }
+
+
 }
 

@@ -4,18 +4,12 @@ import java.sql.Connection;
 import java.util.Date;
 
 public class NewEventWindow extends JFrame {
-    String name;
-    int organizerID;
-    int competitionID;
-    int placeID;
-    Date date;
-
     String[] places = {"Новосибирская филармония", "ДК Юность", "ДК Академиков"};
     String[] organizers = {"Николай Ратушняк", "Степан Тлеубаев"};
 
     JTextField nameField;
-    JComboBox organizerSelector;
-    JComboBox placeSelector;
+    JComboBox<String> organizerSelector;
+    JComboBox<String> placeSelector;
 
     JTextField dateField;
 
@@ -25,10 +19,9 @@ public class NewEventWindow extends JFrame {
 
     }
 */
-    public NewEventWindow(Connection connection) {
+    public NewEventWindow() {
         super("New event");
         try {
-            this.connection = connection;
             setPreferredSize(new Dimension(400, 200));
             setResizable(false);
             setLocation(0, 0);
@@ -65,7 +58,7 @@ public class NewEventWindow extends JFrame {
 
             gbc.gridx = 1;
             gbc.gridwidth = 2;
-            placeSelector = new JComboBox(places);
+            placeSelector = new JComboBox<>(places);
             mainPanel.add(placeSelector, gbc);
 
             gbc.gridx = 0;
@@ -77,7 +70,7 @@ public class NewEventWindow extends JFrame {
 
             gbc.gridx = 1;
             gbc.gridwidth = 2;
-            organizerSelector = new JComboBox(organizers);
+            organizerSelector = new JComboBox<>(organizers);
             mainPanel.add(organizerSelector, gbc);
 
             gbc.gridx = 1;

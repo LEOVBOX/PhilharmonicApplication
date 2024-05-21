@@ -7,7 +7,6 @@ import java.util.HashMap;
 public class NewGenreRelationWindow extends JFrame {
     ArrayList<JComboBox<String>> genresSelectors;
 
-    ArrayList<String> availableGenres;
     JPanel mainPanel;
     JPanel genresPanel;
     JButton addGenreButton;
@@ -20,19 +19,29 @@ public class NewGenreRelationWindow extends JFrame {
 
     HashMap<String, Integer> genres;
 
+    JPanel buttonsPanel;
+
     boolean isImpresario;
 
     public NewGenreRelationWindow(String windowName, boolean isImpresario) {
         super(windowName);
         try {
             this.isImpresario = isImpresario;
-            setPreferredSize(new Dimension(400, 200));
-            setResizable(false);
+            setPreferredSize(new Dimension(500, 300));
+            setResizable(true);
             setLocation(0, 0);
             setDefaultCloseOperation(HIDE_ON_CLOSE);
             setLayout(new BorderLayout());
+            setLayout(new BorderLayout());
             names = new HashMap<>();
-            genres = new HashMap<>();
+            try {
+                genres = GetUtilities.getGenres();
+                names = GetUtilities.getNames(isImpresario);
+
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
+                        + e.getMessage());
+            }
             mainPanel = new JPanel(new GridBagLayout());
             genresSelectors = new ArrayList<>();
 
@@ -50,14 +59,14 @@ public class NewGenreRelationWindow extends JFrame {
             else {
                 nameLabel = new JLabel("Выберете артиста");
             }
+            nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-            nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
             mainPanel.add(nameLabel, gbc);
 
             gbc.gridy = 1;
             gbc.weightx = 1;
             gbc.gridwidth = 1;
-            nameSelector = new JComboBox<>(getNames().toArray(new String[0]));
+            nameSelector = new JComboBox<>(GetUtilities.getNames(isImpresario).keySet().toArray(new String[0]));
             mainPanel.add(nameSelector, gbc);
 
             gbc.gridy = 2;
@@ -69,16 +78,21 @@ public class NewGenreRelationWindow extends JFrame {
             gbc.gridx = 1;
             gbc.gridy = 5;
             gbc.gridwidth = 1;
+
+            buttonsPanel = new JPanel();
+            buttonsPanel.add(Box.createHorizontalGlue());
+            buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+
             JButton cancelButton = new JButton("cancel");
             cancelButton.addActionListener(e -> dispose());
-            mainPanel.add(cancelButton, gbc);
+            buttonsPanel.add(cancelButton);
 
-            gbc.gridx = 2;
             okButton = new JButton("ok");
             okButton.addActionListener(e -> applyChanges());
-            mainPanel.add(okButton, gbc);
+            buttonsPanel.add(okButton);
 
             add(mainPanel, BorderLayout.CENTER);
+            add(buttonsPanel, BorderLayout.SOUTH);
 
             pack();
             setVisible(true);
@@ -89,72 +103,19 @@ public class NewGenreRelationWindow extends JFrame {
     }
 
     private void initGenresPanel() {
-        availableGenres = getGenres();
-        String[] genres = availableGenres.toArray(new String[0]);
-        JComboBox<String> genreSelector = new JComboBox<>(availableGenres.toArray(new String[0]));
+        String[] genresNames = genres.keySet().toArray(new String[0]);
+        JComboBox<String> genreSelector = new JComboBox<>(genresNames);
         genresSelectors.add(genreSelector);
         genresPanel = new JPanel();
         genresPanel.add(genreSelector);
-        addGenreButton = new JButton("Добавить жанр");
-        addGenreButton.addActionListener(e -> {
-            genresSelectors.add(new JComboBox<>(genres));
+        //addGenreButton = new JButton("Добавить жанр");
+        /*addGenreButton.addActionListener(e -> {
+            genresSelectors.add(new JComboBox<>(genresNames));
             genresPanel.add(genresSelectors.getLast());
             revalidate();
             repaint();
         });
-        genresPanel.add(addGenreButton);
-    }
-
-    private ArrayList<String> getGenres() {
-        ArrayList<String> genreNames = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
-            Statement statement = connection.createStatement();
-
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM genre");
-
-            while (resultSet.next()) {
-                Integer id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                genreNames.add(name);
-
-                genres.put(name, id);
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
-                    + e.getMessage());
-        }
-
-        return genreNames;
-    }
-
-    private ArrayList<String> getNames() {
-        ArrayList<String> impresarioNames = new ArrayList<>();
-        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet;
-            if (isImpresario) {
-                resultSet = statement.executeQuery("SELECT * FROM impresario");
-            }
-            else {
-                resultSet = statement.executeQuery("SELECT * FROM artist");
-            }
-
-            while (resultSet.next()) {
-                Integer id = resultSet.getInt("id");
-                String name = resultSet.getString("last_name");
-                name = name + " " + resultSet.getString("first_name");
-                name = name + " " + resultSet.getString("surname");
-
-                impresarioNames.add(name);
-                names.put(name, id);
-            }
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
-                    + e.getMessage());
-        }
-        return impresarioNames;
+        genresPanel.add(addGenreButton);*/
     }
 
     private String createSQLQuery(int person_id, int genre_id) {

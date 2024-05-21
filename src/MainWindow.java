@@ -14,6 +14,8 @@ public class MainWindow extends JFrame {
     JButton newEventButton;
     JButton impresarioGenreButton;
     JButton artistGenreButton;
+    JButton workWithButton;
+    JButton newBuildingButton;
 
     private void initMainPanel() {
         mainPanel = new JPanel();
@@ -40,7 +42,7 @@ public class MainWindow extends JFrame {
 
         gbc.gridy = 3;
         newEventButton = new JButton("Добавить новое мероприятие");
-        //newEventButton.addActionListener(e -> new NewEventWindow());
+        newEventButton.addActionListener(e -> new NewEventWindow());
 
         gbc.gridy = 4;
         impresarioGenreButton = new JButton("Импресарио-жанр");
@@ -53,8 +55,15 @@ public class MainWindow extends JFrame {
         mainPanel.add(artistGenreButton, gbc);
 
 
+        gbc.gridy = 6;
+        workWithButton = new JButton("Создать связь атрист-импресарио");
+        workWithButton.addActionListener(e -> new ImpresarioArtistWindow());
+        mainPanel.add(workWithButton, gbc);
 
-
+        gbc.gridy = 7;
+        newBuildingButton = new JButton("Добавить культурное сооружение");
+        newBuildingButton.addActionListener(e -> new NewBuildingWindow());
+        mainPanel.add(newBuildingButton, gbc);
 
         this.getContentPane().add(mainPanel);
 
