@@ -12,20 +12,21 @@ public class NewAwardWindow extends JFrame {
     HashMap<String, Integer> artists;
     HashMap<String, Integer> events;
 
+    JPanel buttonsPanel;
+
 
     public NewAwardWindow() {
         super("New event");
         try {
-            setPreferredSize(new Dimension(400, 200));
-            setResizable(false);
+            setPreferredSize(new Dimension(500, 300));
             setLocation(0, 0);
-            setDefaultCloseOperation(EXIT_ON_CLOSE);
+            setDefaultCloseOperation(HIDE_ON_CLOSE);
             setLayout(new BorderLayout());
             JPanel mainPanel = new JPanel(new GridBagLayout());
 
             try {
                 artists = GetUtilities.getNames(false);
-                events = GetUtilities.getEvents();
+                events = GetUtilities.getCompetitions();
             }
             catch (SQLException e) {
                 JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
@@ -76,18 +77,20 @@ public class NewAwardWindow extends JFrame {
             artistSelector = new JComboBox<>(artists.keySet().toArray(new String[0]));
             mainPanel.add(artistSelector, gbc);
 
-            gbc.gridx = 1;
-            gbc.gridy = 4;
-            gbc.gridwidth = 1;
-            JButton cancelButton = new JButton("cancel");
+            buttonsPanel = new JPanel();
+            buttonsPanel.add(Box.createHorizontalGlue());
+            buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+            JButton cancelButton = new JButton("отмена");
             cancelButton.addActionListener(e -> dispose());
-            mainPanel.add(cancelButton, gbc);
+            buttonsPanel.add(cancelButton);
 
             gbc.gridx = 2;
-            JButton okButton = new JButton("ok");
-            mainPanel.add(okButton, gbc);
+            JButton okButton = new JButton("добавить");
+            okButton.addActionListener(e -> applyChanges());
+            buttonsPanel.add(okButton);
 
             add(mainPanel, BorderLayout.CENTER);
+            add(buttonsPanel, BorderLayout.SOUTH);
 
             pack();
             setVisible(true);
@@ -97,6 +100,24 @@ public class NewAwardWindow extends JFrame {
         }
     }
 
+    public void applyChanges() {
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
+            String insertSQL = "INSERT INTO awards (artist_id, event_id, name) VALUES (?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(insertSQL);
+            int artist_id = artists.get((String)artistSelector.getSelectedItem());
+            statement.setInt(1, artist_id);
+            int event_id = events.get((String)eventSelector.getSelectedItem());
+            statement.setInt(2, event_id);
+            statement.setString(3, nameField.getText());
 
+            statement.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Награда успешно добавлена");
+            dispose();
+        }
+        catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
+                    + e.getMessage());
+        }
+    }
 }
 

@@ -2,6 +2,23 @@ import java.sql.*;
 import java.util.HashMap;
 
 public class GetUtilities {
+    public static HashMap<String, Integer> getEventTypes() throws SQLException{
+        HashMap<String, Integer> genres = new HashMap<>();
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
+            Statement statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM event_type");
+
+            while (resultSet.next()) {
+                Integer id = resultSet.getInt("type_id");
+                String name = resultSet.getString("type_name");
+                genres.put(name, id);
+            }
+
+        }
+
+        return genres;
+    }
     public static HashMap<String, Integer> getNames(boolean isImpresario) throws SQLException {
         HashMap<String, Integer> names = new HashMap<>();
         try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
@@ -68,7 +85,7 @@ public class GetUtilities {
         try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
             Statement statement = connection.createStatement();
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM event");
+            ResultSet resultSet = statement.executeQuery("SELECT id, name FROM event");
 
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("id");
@@ -79,5 +96,43 @@ public class GetUtilities {
         }
 
         return events;
+    }
+
+    public static HashMap<String, Integer> getBuildingNames() throws SQLException {
+        HashMap<String, Integer> buildings = new HashMap<>();
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)){
+            Statement statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery("SELECT id, name, address FROM building");
+
+            while (resultSet.next()) {
+                Integer id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+                name += " " + resultSet.getString("address");
+
+                buildings.put(name, id);
+            }
+        }
+        return buildings;
+    }
+
+    public static HashMap<String, Integer> getCompetitions() throws SQLException {
+        HashMap<String, Integer> competitions = new HashMap<>();
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
+            Statement statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery("""
+                    select id, name from event\s
+                    join event_type on event.type_id = event_type.type_id\s
+                    where event_type.type_name = 'Конкурс'""");
+
+            while (resultSet.next()) {
+                Integer id = resultSet.getInt("id");
+                String name = resultSet.getString("name");
+
+                competitions.put(name, id);
+            }
+        }
+        return competitions;
     }
 }
