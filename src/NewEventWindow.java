@@ -4,17 +4,12 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.sql.Date;
-import java.util.HashMap;
 
 public class NewEventWindow extends JFrame {
     JTextField nameField;
-    JComboBox<String> organizerSelector;
-    JComboBox<String> placeSelector;
-    JComboBox<String> typeSelector;
-    HashMap<String, Integer> buildings;
-    HashMap<String, Integer> impresario;
-    HashMap<String, Integer> eventTypes;
-    JPanel buttonsPanel;
+    Selector organizerSelector;
+    Selector placeSelector;
+    Selector typeSelector;
     JTextField dateField;
 
     public NewEventWindow() {
@@ -26,16 +21,15 @@ public class NewEventWindow extends JFrame {
             setLayout(new BorderLayout());
             JPanel mainPanel = new JPanel(new GridBagLayout());
 
-            buildings = GetUtilities.getBuildingNames();
-            impresario = GetUtilities.getNames(true);
-            eventTypes = GetUtilities.getEventTypes();
+            placeSelector = new Selector("Место проведения", GetUtilities.getBuildingNames());
+            organizerSelector = new Selector("Организатор", GetUtilities.getNames(true));
+            typeSelector = new Selector("Тип мероприятия", GetUtilities.getEventTypes());
 
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
             gbc.gridwidth = 1;
             gbc.fill = GridBagConstraints.HORIZONTAL;
-            gbc.weightx = 1;
             gbc.weighty = 1;
 
 
@@ -44,70 +38,37 @@ public class NewEventWindow extends JFrame {
             mainPanel.add(nameLabel, gbc);
 
             gbc.gridx = 1;
-            gbc.weightx = 1;
-            gbc.gridwidth = 2;
+            gbc.gridwidth = 1;
             nameField = new JTextField();
             mainPanel.add(nameField, gbc);
 
+            gbc.gridwidth = 2;
             gbc.gridx = 0;
             gbc.gridy = 1;
-            gbc.gridwidth = 1;
+            mainPanel.add(placeSelector.getPanel(), gbc);
 
-            JLabel placeLabel = new JLabel("Место проведения");
-            placeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-            mainPanel.add(placeLabel, gbc);
+            gbc.gridy++;
+            mainPanel.add(organizerSelector.getPanel(), gbc);
 
-            gbc.gridx = 1;
-            gbc.gridwidth = 2;
-            placeSelector = new JComboBox<>(buildings.keySet().toArray(new String[0]));
-            mainPanel.add(placeSelector, gbc);
+            gbc.gridy++;
+            mainPanel.add(typeSelector.getPanel(), gbc);
 
-            gbc.gridx = 0;
-            gbc.gridy = 2;
-            gbc.gridwidth = 1;
-            JLabel organizerLabel = new JLabel("Организатор");
-            organizerLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-            mainPanel.add(organizerLabel, gbc);
-
-            gbc.gridx = 1;
-            gbc.gridwidth = 2;
-            organizerSelector = new JComboBox<>(impresario.keySet().toArray(new String[0]));
-            mainPanel.add(organizerSelector, gbc);
-
-            gbc.gridx = 0;
-            gbc.gridy = 3;
-            JLabel typeLabel = new JLabel("Тип мероприятия");
-            typeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-            mainPanel.add(typeLabel, gbc);
-
-            gbc.gridx = 1;
-            typeSelector = new JComboBox<>(eventTypes.keySet().toArray(new String[0]));
-            mainPanel.add(typeSelector, gbc);
-
-            gbc.gridy = 4;
-            gbc.gridx = 0;
+            gbc.gridy++;
             gbc.gridwidth = 1;
             JLabel dateLabel = new JLabel("Дата проведения (дд.мм.гггг)");
             dateLabel.setHorizontalAlignment(SwingConstants.RIGHT);
             mainPanel.add(dateLabel, gbc);
 
             gbc.gridx = 1;
-            gbc.gridwidth = 2;
             dateField = new JTextField();
             mainPanel.add(dateField, gbc);
 
-            buttonsPanel = new JPanel();
-            buttonsPanel.add(Box.createHorizontalGlue());
-            buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
-            JButton cancelButton = new JButton("отмена");
-            cancelButton.addActionListener(e -> dispose());
-            buttonsPanel.add(cancelButton);
-            JButton okButton = new JButton("добавить");
-            okButton.addActionListener(e -> applyChanges());
-            buttonsPanel.add(okButton);
+            DialogButtonsPanel dialogButtonsPanel = new DialogButtonsPanel();
+            dialogButtonsPanel.cancelButton.addActionListener(e -> dispose());
+            dialogButtonsPanel.okButton.addActionListener(e -> applyChanges());
 
             add(mainPanel, BorderLayout.CENTER);
-            add(buttonsPanel, BorderLayout.SOUTH);
+            add(dialogButtonsPanel, BorderLayout.SOUTH);
 
             pack();
             setVisible(true);
@@ -135,18 +96,17 @@ public class NewEventWindow extends JFrame {
                         + e.getMessage());
             }
             statement.setDate(2, sqlDate);
-            int type_id = eventTypes.get((String)typeSelector.getSelectedItem());
+            int type_id = typeSelector.getSelectedID();
             statement.setInt(3, type_id);
-            int organizer_id = impresario.get((String)organizerSelector.getSelectedItem());
+            int organizer_id = organizerSelector.getSelectedID();
             statement.setInt(4, organizer_id);
-            int place_id = buildings.get((String)placeSelector.getSelectedItem());
+            int place_id = placeSelector.getSelectedID();
             statement.setInt(5, place_id);
 
             statement.executeUpdate();
             JOptionPane.showMessageDialog(this, "Мероприятие успешно добавлено");
             dispose();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
                     + e.getMessage());
         }
