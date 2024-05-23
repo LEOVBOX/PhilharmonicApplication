@@ -47,7 +47,7 @@ public class NewGenreRelationWindow extends JFrame {
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
-            gbc.gridwidth = 2;
+            gbc.gridwidth = 1;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             gbc.weightx = 1;
             gbc.weighty = 1;
@@ -57,12 +57,10 @@ public class NewGenreRelationWindow extends JFrame {
             } else {
                 nameLabel = new JLabel("Выберете артиста");
             }
-
+            nameLabel.setHorizontalAlignment(SwingConstants.RIGHT);
             mainPanel.add(nameLabel, gbc);
 
             gbc.gridx = 1;
-            gbc.weightx = 1;
-            gbc.gridwidth = 1;
             nameSelector = new JComboBox<>(names.keySet().toArray(new String[0]));
             mainPanel.add(nameSelector, gbc);
 
@@ -70,6 +68,7 @@ public class NewGenreRelationWindow extends JFrame {
             gbc.gridx = 0;
 
             JLabel genreLabel = new JLabel("Выберите жанр");
+            genreLabel.setHorizontalAlignment(SwingConstants.RIGHT);
             mainPanel.add(genreLabel, gbc);
 
             gbc.gridx = 1;
