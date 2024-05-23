@@ -25,7 +25,7 @@ public class QueryResultWindow extends JFrame {
 
 
             setSize(new Dimension(640, 480));
-            setDefaultCloseOperation(EXIT_ON_CLOSE);
+            setDefaultCloseOperation(HIDE_ON_CLOSE);
             setVisible(true);
 
         } catch (Exception e) {

@@ -11,7 +11,7 @@ public class DialogButtonsPanel extends JPanel {
         cancelButton = new JButton("отмена");
         add(cancelButton);
 
-        okButton = new JButton("добавить");
+        okButton = new JButton("ок");
         add(okButton);
     }
 

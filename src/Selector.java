@@ -22,6 +22,9 @@ public class Selector {
         return selectorLabel;
     }
 
+    public String getSelectedName() {
+        return (String)selector.getSelectedItem();
+    }
 
     public JPanel getPanel() {
         JPanel selectorPanel = new JPanel();
@@ -32,8 +35,7 @@ public class Selector {
         selectorLabel.setHorizontalAlignment(SwingConstants.CENTER);
         selectorPanel.add(selectorLabel);
 
-        JComboBox<String> selectorBox = new JComboBox<>(map.keySet().toArray(new String[0]));
-        selectorPanel.add(selectorBox);
+        selectorPanel.add(selector);
 
         return selectorPanel;
     }

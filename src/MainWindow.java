@@ -63,7 +63,7 @@ public class MainWindow extends JFrame {
 
         gbc.gridy = 1;
         JButton getArtistsGenreButton = new JButton("Получить список артистов, выступающих в некотом жанре");
-        getArtistsGenreButton.addActionListener(e -> new QueryResultWindow("artist select", "SELECT * FROM artist"));
+        getArtistsGenreButton.addActionListener(e -> new ArtistGenreQueryWindow());
         queryMenuPanel.add(getArtistsGenreButton, gbc);
 
         gbc.gridy = 2;
