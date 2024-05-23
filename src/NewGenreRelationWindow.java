@@ -9,7 +9,7 @@ public class NewGenreRelationWindow extends JFrame {
 
     JPanel mainPanel;
     JPanel genresPanel;
-    JButton addGenreButton;
+    //JButton addGenreButton;
     JComboBox<String> nameSelector;
     JButton okButton;
 
@@ -55,8 +55,7 @@ public class NewGenreRelationWindow extends JFrame {
 
             if (isImpresario) {
                 nameLabel = new JLabel("Выберете импресарио");
-            }
-            else {
+            } else {
                 nameLabel = new JLabel("Выберете артиста");
             }
             nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -126,8 +125,7 @@ public class NewGenreRelationWindow extends JFrame {
                     "', '"
                     + genre_id +
                     "')";
-        }
-        else {
+        } else {
             return "insert into artist_genre (artist_id, genre_id) values"
                     + "('"
                     + person_id +
@@ -139,14 +137,25 @@ public class NewGenreRelationWindow extends JFrame {
     }
 
 
-
     private void applyChanges() {
         // Создаем новую запись в таблице impresario_genre
         // Получаем id impresario
         String selectedName = (String) nameSelector.getSelectedItem();
         int impresarioID = names.get(selectedName);
 
-        for (JComboBox<String> selector : genresSelectors) {
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
+            String selectedGenre = (String) genresSelectors.getFirst().getSelectedItem();
+            int genreID = genres.get(selectedGenre);
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(createSQLQuery(impresarioID, genreID));
+            JOptionPane.showMessageDialog(this, "Жанр успешно добавлен");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
+                    + e.getMessage());
+        }
+
+
+        /*for (JComboBox<String> selector : genresSelectors) {
             String selectedGenre = (String) selector.getSelectedItem();
             int genreID = genres.get(selectedGenre);
             try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
@@ -157,7 +166,7 @@ public class NewGenreRelationWindow extends JFrame {
                 JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
                         + e.getMessage());
             }
-        }
-        dispose();
+        }*/
+
     }
 }
