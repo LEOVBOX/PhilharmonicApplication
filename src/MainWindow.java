@@ -83,7 +83,7 @@ public class MainWindow extends JFrame {
         queryMenuPanel.add(getImpresarioArtistsButton, gbc);
 
         gbc.gridy++;
-        JButton getConcertsButton = new JButton("Получить перечень концертных мероприятий,\n проведенных в течение заданного периода времени в целом либо указанным организатором");
+        JButton getConcertsButton = new JButton("Получить перечень концертных мероприятий, проведенных в течение заданного периода времени в целом либо указанным организатором");
         queryMenuPanel.add(getConcertsButton, gbc);
 
         gbc.gridy++;
@@ -190,6 +190,7 @@ public class MainWindow extends JFrame {
     }
 
     private void openQueryPanel() {
+        setSize(new Dimension(1000, 480));
         this.getContentPane().removeAll();
         this.getContentPane().add(queryPanel);
         revalidate();
@@ -197,6 +198,7 @@ public class MainWindow extends JFrame {
     }
 
     private void openAddPanel() {
+        setSize(new Dimension(640, 480));
         this.getContentPane().removeAll();
         this.getContentPane().add(addPanel);
         revalidate();
@@ -204,6 +206,7 @@ public class MainWindow extends JFrame {
     }
 
     void openMainPanel() {
+        setSize(new Dimension(480, 480));
         this.getContentPane().removeAll();
         this.getContentPane().add(mainPanel);
         revalidate();

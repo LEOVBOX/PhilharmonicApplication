@@ -25,7 +25,7 @@ public class OrganizerTimeQueryWindow extends JFrame {
             gbc.gridwidth = 1;
             gbc.fill = GridBagConstraints.BOTH;
 
-            JLabel label = new JLabel("Получить список организаторов культурных мероприятий и число проведенных ими концертов в течение определенного периода времени.");
+            JLabel label = new JLabel("<html>Получить список организаторов культурных мероприятий<br>и число проведенных ими концертов в течение определенного периода времени.</html>");
             label.setHorizontalAlignment(SwingConstants.CENTER);
             add(label, BorderLayout.NORTH);
 
