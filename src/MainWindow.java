@@ -14,6 +14,7 @@ public class MainWindow extends JFrame {
     private void initMainPanel() {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
+        mainPanel.setBackground(Color.LIGHT_GRAY);
         GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.gridx = 0;
@@ -55,66 +56,69 @@ public class MainWindow extends JFrame {
         queryMenuPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
+        gbc.anchor = GridBagConstraints.WEST;
+        //gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1;
         gbc.gridy = 0;
         gbc.gridx = 0;
 
-        JButton getBuildingsButton = new JButton("Получить список культурных сооружений указанного типа");
+        JButton getBuildingsButton = new JButton("1. Получить перечень культурных сооружений указанного типа в целом или удовлетворяющих заданным характеристикам ");
         getBuildingsButton.addActionListener(e -> new BuildingsQueryWindow());
         queryMenuPanel.add(getBuildingsButton, gbc);
 
         gbc.gridy++;
-        JButton getArtistsGenreButton = new JButton("Получить список артистов, выступающих в некотом жанре");
+        JButton getArtistsGenreButton = new JButton("2. Получить список артистов, выступающих в некотом жанре");
         getArtistsGenreButton.addActionListener(e -> new ArtistGenreQueryWindow());
         queryMenuPanel.add(getArtistsGenreButton, gbc);
 
         gbc.gridy++;
-        JButton getArtistsImpresarioButton = new JButton("Получить список артистов, работающих с некоторым импресарио");
+        JButton getArtistsImpresarioButton = new JButton("3. Получить список артистов, работающих с некоторым импресарио");
         getArtistsImpresarioButton.addActionListener(e -> new ArtistsImpresarioQueryWindow());
         queryMenuPanel.add(getArtistsImpresarioButton, gbc);
 
         gbc.gridy++;
-        JButton getArtistMultGenreButton = new JButton("Получить список артистов, выступающих более чем в одним жанре с их указанием");
+        JButton getArtistMultGenreButton = new JButton("4. Получить список артистов, выступающих более чем в одним жанре с их указанием");
         getArtistMultGenreButton.addActionListener(e -> new MultipleGenreArtistQueryWindow());
         queryMenuPanel.add(getArtistMultGenreButton, gbc);
 
         gbc.gridy++;
-        JButton getImpresarioArtistsButton = new JButton("Получить список импресарио указанного артиста");
+        JButton getImpresarioArtistsButton = new JButton("5. Получить список импресарио указанного артиста");
         getImpresarioArtistsButton.addActionListener(e -> new ImpreasriosArtistQueryWindow());
         queryMenuPanel.add(getImpresarioArtistsButton, gbc);
 
         gbc.gridy++;
-        JButton getConcertsButton = new JButton("Получить перечень концертных мероприятий, проведенных в течение заданного периода времени в целом либо указанным организатором");
+        JButton getConcertsButton = new JButton("6. Получить перечень концертных мероприятий, проведенных в течение заданного периода времени в целом либо указанным организатором");
         queryMenuPanel.add(getConcertsButton, gbc);
 
         gbc.gridy++;
-        JButton getPrizersButton = new JButton("Получить список призеров указанного конкурса.");
+        JButton getPrizersButton = new JButton("7. Получить список призеров указанного конкурса.");
         getPrizersButton.addActionListener(e -> new PrizersQueryWindow());
         queryMenuPanel.add(getPrizersButton, gbc);
 
         gbc.gridy++;
-        JButton getEventsInBuildingButton = new JButton("Получить перечень концертных мероприятий, проведенных в указанном культурном сооружении");
+        JButton getEventsInBuildingButton = new JButton("8. олучить перечень концертных мероприятий, проведенных в указанном культурном сооружении");
         getEventsInBuildingButton.addActionListener(e -> new EventsInBuildingQuery());
         queryMenuPanel.add(getEventsInBuildingButton, gbc);
 
         gbc.gridy++;
-        JButton getImpresarioInGenreButton = new JButton("Получить список импресарио определенного жанра");
+        JButton getImpresarioInGenreButton = new JButton("9. Получить список импресарио определенного жанра");
         getImpresarioInGenreButton.addActionListener(e -> new ImpresarioInGenreQueryWindow());
         queryMenuPanel.add(getImpresarioInGenreButton, gbc);
 
         gbc.gridy++;
-        JButton getOrganizerStatisticsButton = new JButton("Получить список организаторов культурных мероприятий и число проведенных ими концертов в течение определенного периода времени.");
-        getOrganizerStatisticsButton.addActionListener(e -> new OrganizerTimeQueryWindow());
-        queryMenuPanel.add(getOrganizerStatisticsButton, gbc);
-
-        gbc.gridy++;
-        JButton getNotParticipatingArtistsButton = new JButton("Получить список артистов, не участвовавших ни в каких конкурсах в течение определенного периода времени.");
+        JButton getNotParticipatingArtistsButton = new JButton("10. Получить список артистов, не участвовавших ни в каких конкурсах в течение определенного периода времени.");
         getNotParticipatingArtistsButton.addActionListener(e -> new SelectNotParticipatingArtistWindow());
         queryMenuPanel.add(getNotParticipatingArtistsButton, gbc);
 
         gbc.gridy++;
-        JButton getEventsInTimeButton = new JButton("Получить перечень концертных мероприятий, проведенных в течение заданного периода времени в целом либо указанным организатором.");
-        getEventsInTimeButton.addActionListener(e -> new EventsInTimeQueryWindow());
-        queryMenuPanel.add(getEventsInTimeButton, gbc);
+        JButton getOrganizerStatisticsButton = new JButton("11. Получить список организаторов культурных мероприятий и число проведенных ими концертов в течение определенного периода времени.");
+        getOrganizerStatisticsButton.addActionListener(e -> new OrganizerTimeQueryWindow());
+        queryMenuPanel.add(getOrganizerStatisticsButton, gbc);
+
+        gbc.gridy++;
+        JButton getBuildingsEventsButton = new JButton("12. Получить перечень культурных сооружений, а также даты проведения на них культурных мероприятий в течение определенного периода времени.");
+        getBuildingsEventsButton.addActionListener(e -> new BuildingsEventsWindow());
+        queryMenuPanel.add(getBuildingsEventsButton, gbc);
 
         queryPanel.add(queryMenuPanel, BorderLayout.CENTER);
 
