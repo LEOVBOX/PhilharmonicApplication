@@ -95,6 +95,11 @@ public class MainWindow extends JFrame {
         getEventsInBuildingButton.addActionListener(e -> new EventsInBuildingQuery());
         queryMenuPanel.add(getEventsInBuildingButton, gbc);
 
+        gbc.gridy++;
+        JButton getImpresarioInGenreButton = new JButton("Получить список импресарио определенного жанра");
+        getImpresarioInGenreButton.addActionListener(e -> new ImpresarioInGenreQueryWindow());
+        queryMenuPanel.add(getImpresarioInGenreButton, gbc);
+
         queryPanel.add(queryMenuPanel, BorderLayout.CENTER);
 
     }
