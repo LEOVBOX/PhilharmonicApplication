@@ -73,6 +73,7 @@ public class MainWindow extends JFrame {
 
         gbc.gridy = 3;
         JButton getArtistMultGenreButton = new JButton("Получить список артистов, выступающих более чем в одним жанре с их указанием");
+        getArtistMultGenreButton.addActionListener(e -> new MultipleGenreArtistQueryWindow());
         queryMenuPanel.add(getArtistMultGenreButton, gbc);
 
         gbc.gridy = 4;
