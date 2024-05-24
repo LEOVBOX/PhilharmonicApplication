@@ -58,7 +58,8 @@ public class MainWindow extends JFrame {
         gbc.gridy = 0;
         gbc.gridx = 0;
 
-        JButton getBuildingsButton = new JButton("Получить список культурных сооружений");
+        JButton getBuildingsButton = new JButton("Получить список культурных сооружений указанного типа");
+        getBuildingsButton.addActionListener(e -> new BuildingsQueryWindow());
         queryMenuPanel.add(getBuildingsButton, gbc);
 
         gbc.gridy++;

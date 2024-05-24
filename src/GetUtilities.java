@@ -136,4 +136,18 @@ public class GetUtilities {
         return competitions;
     }
 
+    public static String getBuildingTypeTableName(String typeName) {
+        switch (typeName) {
+            case "Кинотеатр" -> {
+                return "cinema";
+            }
+            case "Театр" -> {
+                return "theatre";
+            }
+            case "Эстрада" -> {
+                return "estrade";
+            }
+        }
+        return null;
+    }
 }

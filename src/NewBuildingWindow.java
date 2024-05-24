@@ -132,6 +132,7 @@ public class NewBuildingWindow extends JFrame {
             statement.setInt(8, theatreParamsPanel.getGalerkaCapacity());
 
             statement.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Театр успешно добавлен");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
                     + e.getMessage());
@@ -147,6 +148,7 @@ public class NewBuildingWindow extends JFrame {
             statement.setInt(3, cinemaParamsPanel.getScreenHeight());
 
             statement.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Кинотеатр успешно добавлен");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
                     + e.getMessage());
@@ -162,6 +164,7 @@ public class NewBuildingWindow extends JFrame {
             statement.setInt(3, estradeParamsPanel.getStageHeight());
 
             statement.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Эстрада успешно добавлена");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
                     + e.getMessage());
@@ -188,9 +191,6 @@ public class NewBuildingWindow extends JFrame {
                 return;
             }
 
-
-
-            System.out.println(insertSQL);
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows > 0) {
