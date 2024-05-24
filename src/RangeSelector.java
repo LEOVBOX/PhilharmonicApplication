@@ -1,5 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class RangeSelector {
     JTextField startField;
@@ -76,4 +79,30 @@ public class RangeSelector {
     public void setEndField(String value) {
         endField.setText(value);
     }
+
+    private Date getDate(JTextField field) {
+        Date sqlDate = null;
+        try {
+            // Создание объекта SimpleDateFormat с нужным форматом
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+            // Преобразование строки в java.util.Date
+            java.util.Date parsedDate = dateFormat.parse(field.getText());
+            // Преобразование java.util.Date в java.sql.Date
+            sqlDate = new java.sql.Date(parsedDate.getTime());
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(null, "Неверный формат даты\n дата должна вводиться в формате дд.мм.гггг"
+                    + e.getMessage());
+        }
+        return sqlDate;
+    }
+
+    public Date getStartDate() {
+        return getDate(startField);
+    }
+
+    public Date getEndDate() {
+        return getDate(endField);
+    }
+
+
 }

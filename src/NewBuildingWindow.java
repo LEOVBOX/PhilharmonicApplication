@@ -176,7 +176,6 @@ public class NewBuildingWindow extends JFrame {
         Integer building_id = null;
         // Добавляем новую запись в таблицу building
         try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
-            //String query = createBuildingInsertQuery();
             String insertSQL = "INSERT INTO building (name, address, capacity, type_id) VALUES (?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(insertSQL, Statement.RETURN_GENERATED_KEYS);
             try {

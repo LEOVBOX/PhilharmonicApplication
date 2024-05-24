@@ -101,6 +101,11 @@ public class MainWindow extends JFrame {
         getImpresarioInGenreButton.addActionListener(e -> new ImpresarioInGenreQueryWindow());
         queryMenuPanel.add(getImpresarioInGenreButton, gbc);
 
+        gbc.gridy++;
+        JButton getOrganizerStatisticsButton = new JButton("Получить список организаторов культурных мероприятий и число проведенных ими концертов в течение определенного периода времени.");
+        getOrganizerStatisticsButton.addActionListener(e -> new OrganizerTimeQueryWindow());
+        queryMenuPanel.add(getOrganizerStatisticsButton, gbc);
+
         queryPanel.add(queryMenuPanel, BorderLayout.CENTER);
 
     }
