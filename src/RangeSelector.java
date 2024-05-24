@@ -90,7 +90,7 @@ public class RangeSelector {
             // Преобразование java.util.Date в java.sql.Date
             sqlDate = new java.sql.Date(parsedDate.getTime());
         } catch (ParseException e) {
-            JOptionPane.showMessageDialog(null, "Неверный формат даты\n дата должна вводиться в формате дд.мм.гггг"
+            JOptionPane.showMessageDialog(null, "Неверный формат даты\n дата должна вводиться в формате дд.мм.гггг "
                     + e.getMessage());
         }
         return sqlDate;

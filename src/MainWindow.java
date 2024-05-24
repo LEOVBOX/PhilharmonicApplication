@@ -106,6 +106,11 @@ public class MainWindow extends JFrame {
         getOrganizerStatisticsButton.addActionListener(e -> new OrganizerTimeQueryWindow());
         queryMenuPanel.add(getOrganizerStatisticsButton, gbc);
 
+        gbc.gridy++;
+        JButton getNotParticipatingArtistsButton = new JButton("Получить список артистов, не участвовавших ни в каких конкурсах в течение определенного периода времени.");
+        getNotParticipatingArtistsButton.addActionListener(e -> new SelectNotParticipatingArtistWindow());
+        queryMenuPanel.add(getNotParticipatingArtistsButton, gbc);
+
         queryPanel.add(queryMenuPanel, BorderLayout.CENTER);
 
     }
