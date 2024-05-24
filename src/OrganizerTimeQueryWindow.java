@@ -64,6 +64,6 @@ public class OrganizerTimeQueryWindow extends JFrame {
 
         String sql = String.format(prepareSQL, startDate.toString(), endDate.toString());
 
-        new QueryResultWindow(startDate + " - " + endDate, sql);
+        new QueryResultWindow(startDate + " : " + endDate, sql);
     }
 }

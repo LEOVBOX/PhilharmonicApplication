@@ -111,6 +111,11 @@ public class MainWindow extends JFrame {
         getNotParticipatingArtistsButton.addActionListener(e -> new SelectNotParticipatingArtistWindow());
         queryMenuPanel.add(getNotParticipatingArtistsButton, gbc);
 
+        gbc.gridy++;
+        JButton getEventsInTimeButton = new JButton("Получить перечень концертных мероприятий, проведенных в течение заданного периода времени в целом либо указанным организатором.");
+        getEventsInTimeButton.addActionListener(e -> new EventsInTimeQueryWindow());
+        queryMenuPanel.add(getEventsInTimeButton, gbc);
+
         queryPanel.add(queryMenuPanel, BorderLayout.CENTER);
 
     }
