@@ -1,18 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
-import java.sql.*;
-import java.util.ArrayList;
 
 public class NewPersonWindow extends JFrame {
     JPanel mainPanel;
     JTextField firstName;
     JTextField lastName;
     JTextField surname;
-    ArrayList<JComboBox<String>> genres;
     JButton okButton;
-    Connection connection;
-
-
 
 
     public NewPersonWindow(String windowName) {
@@ -24,7 +18,6 @@ public class NewPersonWindow extends JFrame {
             setDefaultCloseOperation(HIDE_ON_CLOSE);
             setLayout(new BorderLayout());
             mainPanel = new JPanel(new GridBagLayout());
-            genres = new ArrayList<>();
 
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
@@ -69,21 +62,6 @@ public class NewPersonWindow extends JFrame {
             gbc.gridwidth = 2;
             surname = new JTextField();
             mainPanel.add(surname, gbc);
-
-            /*gbc.gridx = 0;
-            gbc.gridy = 3;
-            gbc.gridwidth = 3;
-
-            initGenresPanel();
-            mainPanel.add(genresPanel, gbc);
-
-
-            gbc.gridy = 4;
-            gbc.gridx = 0;
-
-            mainPanel.add(addGenreButton, gbc);*/
-
-
 
             gbc.gridx = 1;
             gbc.gridy = 5;

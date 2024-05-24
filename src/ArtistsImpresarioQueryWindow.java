@@ -1,10 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ArtistGenreQueryWindow extends JFrame {
-    Selector genres;
-    public ArtistGenreQueryWindow() {
-        super("Запрос");
+public class ArtistsImpresarioQueryWindow extends JFrame {
+
+    Selector impresarioSelector;
+    public ArtistsImpresarioQueryWindow() {
         try {
             setPreferredSize(new Dimension(500, 200));
             setResizable(false);
@@ -12,12 +12,12 @@ public class ArtistGenreQueryWindow extends JFrame {
             setDefaultCloseOperation(HIDE_ON_CLOSE);
             setLayout(new BorderLayout());
             setLayout(new BorderLayout());
-            JLabel label = new JLabel("Получить список артистов, выступающих в некотором жанре.");
+            JLabel label = new JLabel("Получить список артистов, работающих с некоторым импресарио.");
             label.setHorizontalAlignment(SwingConstants.CENTER);
             add(label, BorderLayout.NORTH);
 
-            genres = new Selector("Жанр", GetUtilities.getGenres());
-            add(genres.getPanel(), BorderLayout.CENTER);
+            impresarioSelector = new Selector("Импресарио", GetUtilities.getNames(true));
+            add(impresarioSelector.getPanel(), BorderLayout.CENTER);
 
 
             DialogButtonsPanel dialogButtonsPanel = new DialogButtonsPanel();
@@ -34,12 +34,10 @@ public class ArtistGenreQueryWindow extends JFrame {
             throw new RuntimeException(e);
         }
     }
-
     private void applyChanges() {
-        String sql = "select id, last_name, first_name, surname from artist join\n" +
-                "artist_genre on artist.id = artist_genre.artist_id\n" +
-                "where genre_id = " + genres.getSelectedID();
-        new QueryResultWindow("Артисты выступающие в жанре " + genres.getSelectedName(), sql);
+        String sql = "select id, last_name, first_name, surname from artist join work_with on\n" +
+                "artist.id = work_with.artist_id \n" +
+                "where impresario_id = " + impresarioSelector.getSelectedID();
+        new QueryResultWindow("Артисты работающие с " + impresarioSelector.getSelectedName(), sql);
     }
 }
-

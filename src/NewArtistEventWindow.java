@@ -1,19 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
-import java.util.HashMap;
 
 public class NewArtistEventWindow extends JFrame {
-    HashMap<String, Integer> artists;
-    HashMap<String, Integer> events;
-
+    Selector artistsSelector;
+    Selector eventsSelector;
     JPanel mainPanel;
-    JComboBox<String> eventSelector;
-    JComboBox<String> artistSelector;
-
-    JPanel buttonsPanel;
-    JButton okButton;
-    JButton cancelButton;
 
     public NewArtistEventWindow() {
         super("Add artist to event");
@@ -24,10 +16,9 @@ public class NewArtistEventWindow extends JFrame {
             setDefaultCloseOperation(HIDE_ON_CLOSE);
             setLayout(new BorderLayout());
             setLayout(new BorderLayout());
-            artists = new HashMap<>();
             try {
-                events = GetUtilities.getEvents();
-                artists = GetUtilities.getNames(false);
+                eventsSelector = new Selector("Мероприятие", GetUtilities.getEvents());
+                artistsSelector = new Selector("Артист", GetUtilities.getNames(false));
 
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
@@ -39,43 +30,23 @@ public class NewArtistEventWindow extends JFrame {
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
-            gbc.gridwidth = 2;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             gbc.weightx = 1;
             gbc.weighty = 1;
 
-            JLabel nameLabel = new JLabel("Выберете артиста");
-            mainPanel.add(nameLabel, gbc);
 
-            gbc.gridx = 1;
-            gbc.weightx = 1;
             gbc.gridwidth = 1;
-            artistSelector = new JComboBox<>(artists.keySet().toArray(new String[0]));
-            mainPanel.add(artistSelector, gbc);
+            mainPanel.add(artistsSelector.getPanel(), gbc);
 
-            gbc.gridy = 1;
-            gbc.gridx = 0;
-            JLabel eventLabel = new JLabel("Выберете мероприятие");
-            mainPanel.add(eventLabel, gbc);
+            gbc.gridy++;
+            mainPanel.add(eventsSelector.getPanel(), gbc);
 
-            gbc.gridx = 1;
-            eventSelector = new JComboBox<>(events.keySet().toArray(new String[0]));
-            mainPanel.add(eventSelector, gbc);
-
-            buttonsPanel = new JPanel();
-            buttonsPanel.add(Box.createHorizontalGlue());
-            buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
-
-            cancelButton = new JButton("cancel");
-            cancelButton.addActionListener(e -> dispose());
-            buttonsPanel.add(cancelButton);
-
-            okButton = new JButton("ok");
-            okButton.addActionListener(e -> applyChanges());
-            buttonsPanel.add(okButton);
+            DialogButtonsPanel dialogButtonsPanel = new DialogButtonsPanel();
+            dialogButtonsPanel.okButton.addActionListener(e -> applyChanges());
+            dialogButtonsPanel.cancelButton.addActionListener(e -> dispose());
 
             add(mainPanel, BorderLayout.CENTER);
-            add(buttonsPanel, BorderLayout.SOUTH);
+            add(dialogButtonsPanel, BorderLayout.SOUTH);
 
             pack();
             setVisible(true);
@@ -90,9 +61,9 @@ public class NewArtistEventWindow extends JFrame {
         try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
             String insertSQL = "INSERT INTO artist_event (artist_id, event_id) VALUES (?, ?)";
             PreparedStatement statement = connection.prepareStatement(insertSQL);
-            int artist_id = artists.get((String) artistSelector.getSelectedItem());
+            int artist_id = artistsSelector.getSelectedID();
             statement.setInt(1, artist_id);
-            int event_id = events.get((String) eventSelector.getSelectedItem());
+            int event_id = eventsSelector.getSelectedID();
             statement.setInt(2, event_id);
 
             statement.executeUpdate();

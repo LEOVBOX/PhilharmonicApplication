@@ -68,6 +68,7 @@ public class MainWindow extends JFrame {
 
         gbc.gridy = 2;
         JButton getArtistsImpresarioButton = new JButton("Получить список артистов, работающих с некоторым импресарио");
+        getArtistsImpresarioButton.addActionListener(e -> new ArtistsImpresarioQueryWindow());
         queryMenuPanel.add(getArtistsImpresarioButton, gbc);
 
         gbc.gridy = 3;

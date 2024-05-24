@@ -1,8 +1,5 @@
 import javax.swing.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class NewArtistWindow extends NewPersonWindow {
 
@@ -11,28 +8,27 @@ public class NewArtistWindow extends NewPersonWindow {
         okButton.addActionListener(e -> applyChanges());
     }
 
-    private String createSQLQuery() {
-        return "insert into artist (last_name, first_name, surname) values"
-                + "('"
-                + lastName.getText() +
-                "', '"
-                + firstName.getText() +
-                " ', '"
-                + surname.getText() +
-                "')";
-    }
-
     private void applyChanges() {
-        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)){
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(createSQLQuery());
+        String sql = "INSERT INTO artist (last_name, first_name, surname) VALUES (?, ?, ?)";
+
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, lastName.getText());
+            statement.setString(2, firstName.getText());
+            statement.setString(3, surname.getText());
+
+            statement.executeUpdate();
             JOptionPane.showMessageDialog(this, "Артист успешно добавлен");
-            dispose();
-        }
-        catch (SQLException e) {
+            lastName.setText("");
+            firstName.setText("");
+            surname.setText("");
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
                     + e.getMessage());
         }
+
+
     }
 
 }

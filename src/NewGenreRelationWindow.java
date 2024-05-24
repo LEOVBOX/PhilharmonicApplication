@@ -87,6 +87,7 @@ public class NewGenreRelationWindow extends JFrame {
 
             statement.executeUpdate();
 
+            //NotificationWindow.showNotificationWindow(true, "Жанр успешно добавлен");
             JOptionPane.showMessageDialog(this, "Жанр успешно добавлен к артисту");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
