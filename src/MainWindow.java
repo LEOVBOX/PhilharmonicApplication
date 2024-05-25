@@ -57,7 +57,6 @@ public class MainWindow extends JFrame {
         GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.anchor = GridBagConstraints.WEST;
-        //gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1;
         gbc.gridy = 0;
         gbc.gridx = 0;
@@ -96,7 +95,7 @@ public class MainWindow extends JFrame {
         queryMenuPanel.add(getPrizersButton, gbc);
 
         gbc.gridy++;
-        JButton getEventsInBuildingButton = new JButton("8. олучить перечень концертных мероприятий, проведенных в указанном культурном сооружении");
+        JButton getEventsInBuildingButton = new JButton("8. Получить перечень концертных мероприятий, проведенных в указанном культурном сооружении");
         getEventsInBuildingButton.addActionListener(e -> new EventsInBuildingQuery());
         queryMenuPanel.add(getEventsInBuildingButton, gbc);
 
