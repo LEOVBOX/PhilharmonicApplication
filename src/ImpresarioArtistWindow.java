@@ -28,11 +28,11 @@ public class ImpresarioArtistWindow extends JFrame {
 
             gbc.gridy = 0;
             gbc.gridwidth = 1;
-            impresarioSelector = new Selector("Импресарио", GetUtilities.getNames(true));
+            impresarioSelector = new Selector("Импресарио", GetUtilities.getNames("impresario"));
             mainPanel.add(impresarioSelector.getPanel(), gbc);
 
             gbc.gridy++;
-            artistSelector = new Selector("Артист", GetUtilities.getNames(false));
+            artistSelector = new Selector("Артист", GetUtilities.getNames("artist"));
             mainPanel.add(artistSelector.getPanel(), gbc);
 
 

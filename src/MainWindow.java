@@ -95,6 +95,7 @@ public class MainWindow extends JFrame {
 
         gbc.gridy++;
         JButton getConcertsButton = new JButton("6. Получить перечень концертных мероприятий, проведенных в течение заданного периода времени в целом либо указанным организатором");
+        getConcertsButton.addActionListener(e -> new EventsInTimeQueryWindow());
         queryMenuPanel.add(getConcertsButton, gbc);
 
         gbc.gridy++;
@@ -146,7 +147,7 @@ public class MainWindow extends JFrame {
         gbc.gridy = 0;
 
         JButton editArtistButton = new JButton("Редактировать артиста");
-        editArtistButton.addActionListener(e-> new EditArtistWindow());
+        editArtistButton.addActionListener(e-> new EditPersonForm("artist"));
         editMenuPanel.setBackground(Color.GRAY);
         editMenuPanel.add(editArtistButton, gbc);
 

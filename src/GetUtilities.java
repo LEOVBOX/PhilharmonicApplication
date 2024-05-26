@@ -19,25 +19,24 @@ public class GetUtilities {
 
         return genres;
     }
-    public static HashMap<String, Integer> getNames(boolean isImpresario) throws SQLException {
+    public static HashMap<String, Integer> getNames(String tableName) throws SQLException {
         HashMap<String, Integer> names = new HashMap<>();
-        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet;
-            if (isImpresario) {
-                resultSet = statement.executeQuery("SELECT * FROM impresario");
-            } else {
-                resultSet = statement.executeQuery("SELECT * FROM artist");
-            }
+        String preparedSQL = "SELECT * FROM %s";
+        String sql = String.format(preparedSQL, tableName);
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            while (resultSet.next()) {
-                Integer id = resultSet.getInt("id");
-                String name = resultSet.getString("last_name");
-                name = name + " " + resultSet.getString("first_name");
-                name = name + " " + resultSet.getString("surname");
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Integer id = resultSet.getInt("id");
+                    String name = resultSet.getString("last_name");
+                    name = name + " " + resultSet.getString("first_name");
+                    name = name + " " + resultSet.getString("surname");
 
                     names.put(name, id);
 
+                }
             }
 
         }

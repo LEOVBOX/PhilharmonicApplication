@@ -25,7 +25,7 @@ public class NewAwardWindow extends JFrame {
             JPanel mainPanel = new JPanel(new GridBagLayout());
 
             try {
-                artists = GetUtilities.getNames(false);
+                artists = GetUtilities.getNames("artist");
                 events = GetUtilities.getCompetitions();
             }
             catch (SQLException e) {

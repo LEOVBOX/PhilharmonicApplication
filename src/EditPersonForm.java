@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
 
-public class EditArtistWindow extends JFrame {
+public class EditPersonForm extends JFrame {
     JTextField firstName;
     JTextField lastName;
     JTextField surname;
@@ -19,6 +19,8 @@ public class EditArtistWindow extends JFrame {
     JPanel selectPanel;
 
     JPanel confirmButtonPanel;
+
+    String tableName;
 
     private void initSelectPanel() {
         selectPanel = new JPanel(new BorderLayout());
@@ -77,8 +79,9 @@ public class EditArtistWindow extends JFrame {
 
     }
 
-    public EditArtistWindow() {
+    public EditPersonForm(String tableName) {
         super();
+        this.tableName = tableName;
         try {
             setLayout(new BorderLayout());
 
@@ -90,7 +93,7 @@ public class EditArtistWindow extends JFrame {
 
             initBottomPanel();
             initConfirmButtonPanel();
-            entitySelector = new Selector("Выбор артиста", GetUtilities.getNames(false));
+            entitySelector = new Selector("Выбор артиста", GetUtilities.getNames("artist"));
 
             initSelectPanel();
             initEditPanel();
@@ -143,14 +146,15 @@ public class EditArtistWindow extends JFrame {
     }
 
     private void applyChanges() {
-        String sql = "UPDATE artist SET first_name = ?, last_name = ?, surname = ? WHERE id = ?";
+        String sql = "UPDATE ? SET first_name = ?, last_name = ?, surname = ? WHERE id = ?";
 
         try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password);
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, firstName.getText());
-            statement.setString(2, lastName.getText());
-            statement.setString(3, surname.getText());
-            statement.setInt(4, entitySelector.getSelectedID());
+            statement.setString(1, tableName);
+            statement.setString(2, firstName.getText());
+            statement.setString(3, lastName.getText());
+            statement.setString(4, surname.getText());
+            statement.setInt(5, entitySelector.getSelectedID());
 
             statement.executeUpdate();
             JOptionPane.showMessageDialog(this, "Артист успешно изменен");

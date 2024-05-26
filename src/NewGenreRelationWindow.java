@@ -21,10 +21,10 @@ public class NewGenreRelationWindow extends JFrame {
             try {
                 genres = new Selector("Выберите жанр", GetUtilities.getGenres());
                 if (isImpresario) {
-                    names = new Selector("Выберете импресарио", GetUtilities.getNames(true));
+                    names = new Selector("Выберете импресарио", GetUtilities.getNames("impresario"));
                 }
                 else {
-                    names = new Selector("Выберете артиста", GetUtilities.getNames(false));
+                    names = new Selector("Выберете артиста", GetUtilities.getNames("artist"));
                 }
 
 
