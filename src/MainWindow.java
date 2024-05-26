@@ -11,6 +11,8 @@ public class MainWindow extends JFrame {
     JPanel addPanel;
     JPanel queryPanel;
 
+    JPanel editPanel;
+
     private void initMainPanel() {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
@@ -20,15 +22,21 @@ public class MainWindow extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = 0;
 
-        JButton openAddPanelButton = new JButton("Открыть меню вввода");
+        JButton openAddPanelButton = new JButton("Открыть меню добавления");
         openAddPanelButton.addActionListener(e -> openAddPanel());
         mainPanel.add(openAddPanelButton, gbc);
 
-        gbc.gridy = 1;
+        gbc.gridy++;
 
         JButton openQueryPanelButton = new JButton("Открыть меню запросов");
         openQueryPanelButton.addActionListener(e -> openQueryPanel());
         mainPanel.add(openQueryPanelButton, gbc);
+
+        gbc.gridy++;
+        JButton openEditPanelButton = new JButton("Открыть меню редактирования");
+        openEditPanelButton.addActionListener(e -> openEditPanel());
+        mainPanel.add(openEditPanelButton, gbc);
+
     }
 
     private JPanel initGoBackPanel() {
@@ -123,6 +131,78 @@ public class MainWindow extends JFrame {
 
     }
 
+    private void initEditPanel() {
+        editPanel = new JPanel();
+        editPanel.setLayout(new BorderLayout());
+
+        JPanel goBackPanel = initGoBackPanel();
+        editPanel.add(goBackPanel, BorderLayout.NORTH);
+
+        JPanel editMenuPanel = new JPanel();
+        editMenuPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+        JButton editArtistButton = new JButton("Редактировать артиста");
+        editArtistButton.addActionListener(e-> new EditArtistWindow());
+        editMenuPanel.setBackground(Color.GRAY);
+        editMenuPanel.add(editArtistButton, gbc);
+
+        gbc.gridy++;
+        JButton newImpresarioButton = new JButton("Добавить нового импресарио");
+        newImpresarioButton.addActionListener(e -> new NewImpresarioWindow());
+        editMenuPanel.add(newImpresarioButton, gbc);
+
+        gbc.gridy++;
+        JButton newGenreButton = new JButton("Добавить новый жанр");
+        newGenreButton.addActionListener(e -> new NewGenreWindow());
+        editMenuPanel.add(newGenreButton, gbc);
+
+        gbc.gridy++;
+        JButton newEventTypeButton = new JButton("Добавить новый тип мероприятия");
+        newEventTypeButton.addActionListener(e -> new NewEventTypeWindow());
+        editMenuPanel.add(newEventTypeButton, gbc);
+
+        gbc.gridy++;
+        JButton newEventButton = new JButton("Добавить новое мероприятие");
+        newEventButton.addActionListener(e -> new NewEventWindow());
+        editMenuPanel.add(newEventButton, gbc);
+
+        gbc.gridy++;
+        JButton impresarioGenreButton = new JButton("Импресарио-жанр");
+        impresarioGenreButton.addActionListener(e -> new NewGenreRelationWindow("Жанр-импресарио", true));
+        editMenuPanel.add(impresarioGenreButton, gbc);
+
+        gbc.gridy++;
+        JButton artistGenreButton = new JButton("Артист-жанр");
+        artistGenreButton.addActionListener(e -> new NewGenreRelationWindow("Жанр-артист", false));
+        editMenuPanel.add(artistGenreButton, gbc);
+
+        gbc.gridy++;
+        JButton workWithButton = new JButton("Создать связь атрист-импресарио");
+        workWithButton.addActionListener(e -> new ImpresarioArtistWindow());
+        editMenuPanel.add(workWithButton, gbc);
+
+        gbc.gridy++;
+        JButton newBuildingButton = new JButton("Добавить культурное сооружение");
+        newBuildingButton.addActionListener(e -> new NewBuildingWindow());
+        editMenuPanel.add(newBuildingButton, gbc);
+
+        gbc.gridy++;
+        JButton newAwardButton = new JButton("Добавить новую награду");
+        newAwardButton.addActionListener(e -> new NewAwardWindow());
+        editMenuPanel.add(newAwardButton, gbc);
+
+        gbc.gridy++;
+        JButton addArtistToEventButton = new JButton("Добавить артиста на мероприятие");
+        addArtistToEventButton.addActionListener(e -> new NewArtistEventWindow());
+        editMenuPanel.add(addArtistToEventButton, gbc);
+
+        editPanel.add(editMenuPanel, BorderLayout.CENTER);
+    }
+
     private void initAddPanel() {
         addPanel = new JPanel();
         addPanel.setLayout(new BorderLayout());
@@ -143,48 +223,52 @@ public class MainWindow extends JFrame {
         addMenuPanel.setBackground(Color.GRAY);
         addMenuPanel.add(newArtistButton, gbc);
 
-        gbc.gridy = 1;
+        gbc.gridy++;
         JButton newImpresarioButton = new JButton("Добавить нового импресарио");
         newImpresarioButton.addActionListener(e -> new NewImpresarioWindow());
         addMenuPanel.add(newImpresarioButton, gbc);
 
-        gbc.gridy = 2;
+        gbc.gridy++;
         JButton newGenreButton = new JButton("Добавить новый жанр");
         newGenreButton.addActionListener(e -> new NewGenreWindow());
         addMenuPanel.add(newGenreButton, gbc);
 
-        gbc.gridy = 3;
+        gbc.gridy++;
+        JButton newEventTypeButton = new JButton("Добавить новый тип мероприятия");
+        newEventTypeButton.addActionListener(e -> new NewEventTypeWindow());
+        addMenuPanel.add(newEventTypeButton, gbc);
+
+        gbc.gridy++;
         JButton newEventButton = new JButton("Добавить новое мероприятие");
         newEventButton.addActionListener(e -> new NewEventWindow());
         addMenuPanel.add(newEventButton, gbc);
 
-        gbc.gridy = 4;
+        gbc.gridy++;
         JButton impresarioGenreButton = new JButton("Импресарио-жанр");
         impresarioGenreButton.addActionListener(e -> new NewGenreRelationWindow("Жанр-импресарио", true));
         addMenuPanel.add(impresarioGenreButton, gbc);
 
-        gbc.gridy = 5;
+        gbc.gridy++;
         JButton artistGenreButton = new JButton("Артист-жанр");
         artistGenreButton.addActionListener(e -> new NewGenreRelationWindow("Жанр-артист", false));
         addMenuPanel.add(artistGenreButton, gbc);
 
-
-        gbc.gridy = 6;
+        gbc.gridy++;
         JButton workWithButton = new JButton("Создать связь атрист-импресарио");
         workWithButton.addActionListener(e -> new ImpresarioArtistWindow());
         addMenuPanel.add(workWithButton, gbc);
 
-        gbc.gridy = 7;
+        gbc.gridy++;
         JButton newBuildingButton = new JButton("Добавить культурное сооружение");
         newBuildingButton.addActionListener(e -> new NewBuildingWindow());
         addMenuPanel.add(newBuildingButton, gbc);
 
-        gbc.gridy = 8;
+        gbc.gridy++;
         JButton newAwardButton = new JButton("Добавить новую награду");
         newAwardButton.addActionListener(e -> new NewAwardWindow());
         addMenuPanel.add(newAwardButton, gbc);
 
-        gbc.gridy = 9;
+        gbc.gridy++;
         JButton addArtistToEventButton = new JButton("Добавить артиста на мероприятие");
         addArtistToEventButton.addActionListener(e -> new NewArtistEventWindow());
         addMenuPanel.add(addArtistToEventButton, gbc);
@@ -192,28 +276,31 @@ public class MainWindow extends JFrame {
         addPanel.add(addMenuPanel, BorderLayout.CENTER);
     }
 
-    private void openQueryPanel() {
-        setSize(new Dimension(1000, 480));
+    private void openPanel(JPanel panel) {
         this.getContentPane().removeAll();
-        this.getContentPane().add(queryPanel);
+        this.getContentPane().add(panel);
         revalidate();
         repaint();
+    }
+
+
+    private void openQueryPanel() {
+        setSize(new Dimension(1000, 480));
+        openPanel(queryPanel);
     }
 
     private void openAddPanel() {
         setSize(new Dimension(640, 480));
-        this.getContentPane().removeAll();
-        this.getContentPane().add(addPanel);
-        revalidate();
-        repaint();
+        openPanel(addPanel);
     }
 
     void openMainPanel() {
         setSize(new Dimension(480, 480));
-        this.getContentPane().removeAll();
-        this.getContentPane().add(mainPanel);
-        revalidate();
-        repaint();
+        openPanel(mainPanel);
+    }
+
+    void openEditPanel() {
+        openPanel(editPanel);
     }
 
 
@@ -255,6 +342,7 @@ public class MainWindow extends JFrame {
             initMainPanel();
             initAddPanel();
             initQueryPanel();
+            initEditPanel();
             add(connectPanel);
             setDefaultCloseOperation(EXIT_ON_CLOSE);
             setVisible(true);
