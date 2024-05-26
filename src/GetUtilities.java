@@ -3,7 +3,7 @@ import java.util.HashMap;
 
 public class GetUtilities {
 
-    public static HashMap<String, Integer> getNamesMap(String tableName, String idLabel, String ... nameLabels) throws SQLException{
+    public static HashMap<String, Integer> getNamesMap(String tableName, String idLabel, String... nameLabels) throws SQLException {
         HashMap<String, Integer> names = new HashMap<>();
         String preparedSQL = "SELECT %s, %s FROM %s";
         String nameLabel = String.join(", ", nameLabels);
@@ -32,8 +32,8 @@ public class GetUtilities {
 
     public static HashMap<String, Integer> getCompetitionsMap() throws SQLException {
         HashMap<String, Integer> competitions = new HashMap<>();
-        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
-            Statement statement = connection.createStatement();
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password);
+             Statement statement = connection.createStatement()) {
 
             ResultSet resultSet = statement.executeQuery("""
                     select id, name from event\s
@@ -48,20 +48,5 @@ public class GetUtilities {
             }
         }
         return competitions;
-    }
-
-    public static String getBuildingTypeTableName(String typeName) {
-        switch (typeName) {
-            case "Кинотеатр" -> {
-                return "cinema";
-            }
-            case "Театр" -> {
-                return "theatre";
-            }
-            case "Эстрада" -> {
-                return "estrade";
-            }
-        }
-        return null;
     }
 }

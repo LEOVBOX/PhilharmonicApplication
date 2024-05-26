@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.HashMap;
 
 public abstract class BuildingForm extends JFrame {
     protected JTextField capacityField;
@@ -107,25 +108,29 @@ public abstract class BuildingForm extends JFrame {
 
     abstract void initMainButtonPanel();
 
-    protected void showUniqueParamsPanel(String selectedType) {
+    protected void showUniqueParamsPanel(String selectedType, Integer building_id) throws SQLException {
+        HashMap<String, String> buildingParams;
         switch (selectedType) {
             case "Театр" -> {
-                if (theatreParamsPanel == null) {
-                    theatreParamsPanel = new TheatreParamsPanel();
+                if (theatreParamsPanel == null || building_id != null) {
+                        buildingParams = getTheatreParams(building_id);
+                    theatreParamsPanel = new TheatreParamsPanel(buildingParams);
                 }
 
                 typeParamsPanel = theatreParamsPanel;
             }
             case "Кинотеатр" -> {
-                if (cinemaParamsPanel == null) {
-                    cinemaParamsPanel = new CinemaParamsPanel();
+                if (cinemaParamsPanel == null || building_id != null) {
+                    buildingParams = getCinemaParams(building_id);
+                    cinemaParamsPanel = new CinemaParamsPanel(buildingParams);
                 }
 
                 typeParamsPanel = cinemaParamsPanel;
             }
             case "Эстрада" -> {
-                if (estradeParamsPanel == null) {
-                    estradeParamsPanel = new EstradeParamsPanel();
+                if (estradeParamsPanel == null || building_id != null) {
+                    buildingParams = getEstradeParams(building_id);
+                    estradeParamsPanel = new EstradeParamsPanel(buildingParams);
                 }
 
                 typeParamsPanel = estradeParamsPanel;
@@ -142,4 +147,80 @@ public abstract class BuildingForm extends JFrame {
 
 
     abstract void applyChanges();
+
+    public static HashMap<String, String> getCinemaParams(int building_id) throws SQLException {
+        HashMap<String, String> buildingParams = new HashMap<>();
+        String sql = "SELECT screen_width, screen_height FROM cinema WHERE building_id = ?";
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, building_id);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    buildingParams.put("screen_width", resultSet.getString("screen_width"));
+                    buildingParams.put("screen_height", resultSet.getString("screen_height"));
+                }
+            }
+        }
+        return buildingParams;
+    }
+
+    public static HashMap<String, String> getTheatreParams(int building_id) throws SQLException {
+        HashMap<String, String> buildingParams = new HashMap<>();
+        String sql = "SELECT parter_capacity, benoir_capacity, mezzanine_capacity, first_tier_capacity, "+
+                "second_tier_capacity, amphitheatre_capacity, galerka_capacity FROM theatre WHERE building_id = ?";
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, building_id);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    buildingParams.put("parter_capacity", resultSet.getString("parter_capacity"));
+                    buildingParams.put("benoir_capacity", resultSet.getString("benoir_capacity"));
+                    buildingParams.put("mezzanine_capacity", resultSet.getString("mezzanine_capacity"));
+                    buildingParams.put("first_tier_capacity", resultSet.getString("first_tier_capacity"));
+                    buildingParams.put("second_tier_capacity", resultSet.getString("second_tier_capacity"));
+                    buildingParams.put("amphitheatre_capacity", resultSet.getString("amphitheatre_capacity"));
+                    buildingParams.put("galerka_capacity", resultSet.getString("galerka_capacity"));
+                }
+            }
+        }
+        return buildingParams;
+    }
+
+    public static HashMap<String, String> getEstradeParams(int building_id) throws SQLException {
+        HashMap<String, String> buildingParams = new HashMap<>();
+        String sql = "SELECT stage_width, stage_depth FROM estrade WHERE building_id = ?";
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, building_id);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    buildingParams.put("stage_width", resultSet.getString("stage_width"));
+                    buildingParams.put("stage_depth", resultSet.getString("stage_depth"));
+                }
+            }
+        }
+        return buildingParams;
+    }
+
+
+    public static String getBuildingTypeTableName(String typeName) {
+        switch (typeName) {
+            case "Кинотеатр" -> {
+                return "cinema";
+            }
+            case "Театр" -> {
+                return "theatre";
+            }
+            case "Эстрада" -> {
+                return "estrade";
+            }
+        }
+        return null;
+    }
 }

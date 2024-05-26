@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 
 public class CinemaParamsPanel extends JPanel {
     JTextField screenWidth;
@@ -13,7 +14,7 @@ public class CinemaParamsPanel extends JPanel {
         return Integer.parseInt(screenHeight.getText());
     }
 
-    public CinemaParamsPanel() {
+    public CinemaParamsPanel(HashMap<String, String> buildingParams) {
         try {
             setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
@@ -32,6 +33,9 @@ public class CinemaParamsPanel extends JPanel {
             gbc.weightx = 1;
             gbc.gridwidth = 2;
             screenWidth = new JTextField();
+            if (buildingParams != null) {
+                screenWidth.setText(buildingParams.get("screen_width"));
+            }
             add(screenWidth, gbc);
 
             gbc.gridx = 0;
@@ -44,6 +48,9 @@ public class CinemaParamsPanel extends JPanel {
             gbc.gridx = 1;
             gbc.gridwidth = 2;
             screenHeight = new JTextField();
+            if (buildingParams != null) {
+                screenHeight.setText(buildingParams.get("screen_height"));
+            }
             add(screenHeight, gbc);
 
         } catch (Exception e) {

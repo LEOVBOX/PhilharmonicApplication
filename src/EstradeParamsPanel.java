@@ -1,19 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 
 public class EstradeParamsPanel extends JPanel {
     JTextField stageWidth;
-    JTextField stageHeight;
+    JTextField stageDepth;
 
     public int getStageWidth() {
-        return Integer.parseInt(stageHeight.getText());
+        return Integer.parseInt(stageWidth.getText());
     }
 
-    public int getStageHeight() {
-        return Integer.parseInt(stageHeight.getText());
+    public int getStageDepth() {
+        return Integer.parseInt(stageDepth.getText());
     }
 
-    public EstradeParamsPanel() {
+    public EstradeParamsPanel(HashMap<String, String> buildingParams) {
         try {
             setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
@@ -32,6 +33,9 @@ public class EstradeParamsPanel extends JPanel {
             gbc.weightx = 1;
             gbc.gridwidth = 2;
             stageWidth = new JTextField();
+            if (buildingParams != null) {
+                stageWidth.setText(buildingParams.get("stage_width"));
+            }
             add(stageWidth, gbc);
 
             gbc.gridx = 0;
@@ -43,8 +47,11 @@ public class EstradeParamsPanel extends JPanel {
 
             gbc.gridx = 1;
             gbc.gridwidth = 2;
-            stageHeight = new JTextField();
-            add(stageHeight, gbc);
+            stageDepth = new JTextField();
+            if (buildingParams != null) {
+                stageDepth.setText(buildingParams.get("stage_depth"));
+            }
+            add(stageDepth, gbc);
 
         } catch (Exception e) {
             throw new RuntimeException(e);

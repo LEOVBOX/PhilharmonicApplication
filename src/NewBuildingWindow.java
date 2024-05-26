@@ -70,7 +70,7 @@ public class NewBuildingWindow extends BuildingForm {
             PreparedStatement statement = connection.prepareStatement(insertSQL);
             statement.setInt(1, building_id);
             statement.setInt(2, estradeParamsPanel.getStageWidth());
-            statement.setInt(3, estradeParamsPanel.getStageHeight());
+            statement.setInt(3, estradeParamsPanel.getStageDepth());
 
             statement.executeUpdate();
             JOptionPane.showMessageDialog(this, "Эстрада успешно добавлена");
@@ -90,7 +90,14 @@ public class NewBuildingWindow extends BuildingForm {
         cancelButton.addActionListener(e -> dispose());
         mainButtonsPanel.add(cancelButton);
         JButton okButton = new JButton("далее");
-        okButton.addActionListener(e -> showUniqueParamsPanel(typeSelector.getSelectedName()));
+            okButton.addActionListener(e -> {
+                try {
+                    showUniqueParamsPanel(typeSelector.getSelectedName(), null);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
         mainButtonsPanel.add(okButton);
     }
 
@@ -120,10 +127,8 @@ public class NewBuildingWindow extends BuildingForm {
                 ResultSet generatedKeys = statement.getGeneratedKeys();
                 if (generatedKeys.next()) {
                     building_id = generatedKeys.getInt(1);
-                    System.out.println("Новая строка вставлена с ID: " + building_id);
                 }
             } else {
-                System.out.println("Вставка не удалась, строк не затронуто.");
                 return;
             }
         } catch (SQLException e) {

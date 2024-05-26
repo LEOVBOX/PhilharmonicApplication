@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
+import java.util.Objects;
 
 public class EditBuildingWindow extends BuildingForm{
     Selector entitySelector;
@@ -78,7 +79,38 @@ public class EditBuildingWindow extends BuildingForm{
 
     @Override
     void applyChanges() {
+        String sql = "UPDATE building SET name = ?, address = ?, capacity = ?, type_id = ? WHERE id = ?";
+        // Добавляем новую запись в таблицу building
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            try {
+                statement.setString(1, nameField.getText());
+                statement.setString(2, addressField.getText());
+                int capacity = Integer.parseInt(capacityField.getText());
+                statement.setInt(3, capacity);
+                statement.setInt(4, typeSelector.getSelectedID());
+                statement.setInt(5, entitySelector.getSelectedID());
 
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Все строки формы должны быть заполнены");
+                return;
+            }
+
+
+            // Добавляем новую запись в таблицу параметров типа
+            if (Objects.equals(typeSelector.getSelectedName(), "Театр")) {
+                updateTheatre(entitySelector.getSelectedID());
+            } else if (Objects.equals(typeSelector.getSelectedName(), "Кинотеатр")) {
+                updateCinema(entitySelector.getSelectedID());
+            } else if (Objects.equals(typeSelector.getSelectedName(), "Эстрада")) {
+                updateEstrade(entitySelector.getSelectedID());
+            }
+            dispose();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
+                    + e.getMessage());
+        }
     }
 
     private void delete() {
@@ -143,13 +175,74 @@ public class EditBuildingWindow extends BuildingForm{
 
         gbc.gridx++;
         okButton = new JButton("далее");
-        okButton.addActionListener(e ->
-            showUniqueParamsPanel(typeSelector.getSelectedName()));
+        okButton.addActionListener(e -> {
+            try {
+                showUniqueParamsPanel(typeSelector.getSelectedName(), entitySelector.getSelectedID());
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
         mainButtonsPanel.add(okButton, gbc);
 
         gbc.gridx++;
         JButton cancelButton = new JButton("отмена");
         cancelButton.addActionListener(e -> dispose());
         mainPanel.add(cancelButton);
+    }
+
+    private void updateTheatre(int building_id) {
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
+            String insertSQL = "UPDATE theatre SET parter_capacity = ?, benoir_capacity = ?, mezzanine_capacity = ?, first_tier_capacity = ?," +
+                    "second_tier_capacity = ?, amphitheatre_capacity = ?, galerka_capacity = ? WHERE building_id = ?";
+            PreparedStatement statement = connection.prepareStatement(insertSQL);
+
+            statement.setInt(1, theatreParamsPanel.getParterCapacity());
+            statement.setInt(2, theatreParamsPanel.getBenoirCapacity());
+            statement.setInt(3, theatreParamsPanel.getMezzanineCapacity());
+            statement.setInt(4, theatreParamsPanel.getFirstTierCapacity());
+            statement.setInt(5, theatreParamsPanel.getSecondTierCapacity());
+            statement.setInt(6, theatreParamsPanel.getAmphitheatreCapacity());
+            statement.setInt(7, theatreParamsPanel.getGalerkaCapacity());
+            statement.setInt(8, building_id);
+
+            statement.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Театр успешно обновлен");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
+                    + e.getMessage());
+        }
+    }
+
+    private void updateEstrade(int building_id) {
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
+            String insertSQL = "UPDATE estrade SET stage_width = ?, stage_depth = ? WHERE building_id = ?";
+            PreparedStatement statement = connection.prepareStatement(insertSQL);
+            statement.setInt(1, estradeParamsPanel.getStageWidth());
+            statement.setInt(2, estradeParamsPanel.getStageDepth());
+            statement.setInt(3, building_id);
+
+            statement.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Эстрада успешно обновлена");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
+                    + e.getMessage());
+        }
+    }
+
+    private void updateCinema(int building_id) {
+        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
+            String insertSQL = "UPDATE cinema SET screen_width = ?, screen_height = ? WHERE building_id = ?";
+            PreparedStatement statement = connection.prepareStatement(insertSQL);
+            statement.setInt(1, cinemaParamsPanel.getScreenWidth());
+            statement.setInt(2, cinemaParamsPanel.getScreenHeight());
+            statement.setInt(3, building_id);
+
+            statement.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Кинотеатр успешно добавлен");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
+                    + e.getMessage());
+        }
     }
 }

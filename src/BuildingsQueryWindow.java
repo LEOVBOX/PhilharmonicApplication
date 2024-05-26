@@ -58,7 +58,7 @@ public class BuildingsQueryWindow extends JFrame {
         String sql = "select id, name, capacity from building where type_id = " + typeSelector.getSelectedID();
         // capacity filter
         if (!(capacitySelector.endField.getText().equals("max") && capacitySelector.startField.getText().equals("0"))) {
-            String typeTableName = GetUtilities.getBuildingTypeTableName(typeSelector.getSelectedName());
+            String typeTableName = BuildingForm.getBuildingTypeTableName(typeSelector.getSelectedName());
 
             sql = "SELECT id, name, capacity FROM building JOIN " + typeTableName + " ON building.id = " + typeTableName + ".building_id WHERE building.capacity > " +
                     capacitySelector.getStartIntValue();

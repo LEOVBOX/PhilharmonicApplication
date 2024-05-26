@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 
 public class TheatreParamsPanel extends JPanel {
     JTextField parterCpacity;
@@ -39,7 +40,7 @@ public class TheatreParamsPanel extends JPanel {
         return Integer.parseInt(galerkaCpacity.getText());
     }
 
-    public TheatreParamsPanel() {
+    public TheatreParamsPanel(HashMap<String, String> params) {
         try {
             setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
@@ -59,6 +60,9 @@ public class TheatreParamsPanel extends JPanel {
             gbc.weightx = 1;
             gbc.gridwidth = 2;
             parterCpacity = new JTextField();
+            if (params != null) {
+                parterCpacity.setText(params.get("parter_capacity"));
+            }
             add(parterCpacity, gbc);
 
             gbc.gridx = 0;
@@ -71,6 +75,9 @@ public class TheatreParamsPanel extends JPanel {
             gbc.gridx = 1;
             gbc.gridwidth = 2;
             benoirCapacity = new JTextField();
+            if (params != null) {
+                benoirCapacity.setText(params.get("benoir_capacity"));
+            }
             add(benoirCapacity, gbc);
 
             gbc.gridx = 0;
@@ -83,6 +90,9 @@ public class TheatreParamsPanel extends JPanel {
             gbc.gridx = 1;
             gbc.gridwidth = 2;
             mezzanineCapacity = new JTextField();
+            if (params != null) {
+                mezzanineCapacity.setText(params.get("mezzanine_capacity"));
+            }
             add(mezzanineCapacity, gbc);
 
             gbc.gridx = 0;
@@ -95,6 +105,9 @@ public class TheatreParamsPanel extends JPanel {
             gbc.gridx = 1;
             gbc.gridwidth = 2;
             firstTierCapacity = new JTextField();
+            if (params != null) {
+                firstTierCapacity.setText(params.get("first_tier_capacity"));
+            }
             add(firstTierCapacity, gbc);
 
             gbc.gridx = 0;
@@ -107,6 +120,9 @@ public class TheatreParamsPanel extends JPanel {
             gbc.gridx = 1;
             gbc.gridwidth = 2;
             secondTierCapacity = new JTextField();
+            if (params != null) {
+                secondTierCapacity.setText(params.get("second_tier_capacity"));
+            }
             add(secondTierCapacity, gbc);
 
             gbc.gridy = 5;
@@ -119,6 +135,9 @@ public class TheatreParamsPanel extends JPanel {
             gbc.gridx = 1;
             gbc.gridwidth = 2;
             amphitheatreCapacity = new JTextField();
+            if (params != null) {
+                amphitheatreCapacity.setText(params.get("amphitheatre_capacity"));
+            }
             add(amphitheatreCapacity, gbc);
 
             gbc.gridy = 6;
@@ -131,6 +150,9 @@ public class TheatreParamsPanel extends JPanel {
             gbc.gridx = 1;
             gbc.gridwidth = 2;
             galerkaCpacity = new JTextField();
+            if (params != null) {
+                galerkaCpacity.setText(params.get("galerka_capacity"));
+            }
             add(galerkaCpacity, gbc);
 
         } catch (Exception e) {
