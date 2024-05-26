@@ -187,8 +187,8 @@ public class MainWindow extends JFrame {
         editMenuPanel.add(workWithButton, gbc);
 
         gbc.gridy++;
-        JButton newBuildingButton = new JButton("Добавить культурное сооружение");
-        newBuildingButton.addActionListener(e -> new NewBuildingWindow());
+        JButton newBuildingButton = new JButton("Редактировать сооружение");
+        newBuildingButton.addActionListener(e -> new EditBuildingWindow());
         editMenuPanel.add(newBuildingButton, gbc);
 
         gbc.gridy++;
