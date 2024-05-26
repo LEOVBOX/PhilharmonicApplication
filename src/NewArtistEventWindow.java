@@ -17,8 +17,8 @@ public class NewArtistEventWindow extends JFrame {
             setLayout(new BorderLayout());
             setLayout(new BorderLayout());
             try {
-                eventsSelector = new Selector("Мероприятие", GetUtilities.getEvents());
-                artistsSelector = new Selector("Артист", GetUtilities.getNames("artist"));
+                eventsSelector = new Selector("Мероприятие", GetUtilities.getNamesMap("event", "id", "name"));
+                artistsSelector = new Selector("Артист", GetUtilities.getNamesMap("artist", "id", "last_name", "first_name", "surname"));
 
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"

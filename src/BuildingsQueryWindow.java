@@ -30,7 +30,7 @@ public class BuildingsQueryWindow extends JFrame {
 
             add(mainPanel, BorderLayout.CENTER);
 
-            typeSelector = new Selector("Тип здания", GetUtilities.getBuildingTypes());
+            typeSelector = new Selector("Тип здания", GetUtilities.getNamesMap("building_type", "type_id", "type_label"));
             mainPanel.add(typeSelector.getPanel(), gbc);
 
             gbc.gridy++;

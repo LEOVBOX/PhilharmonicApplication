@@ -17,7 +17,7 @@ public class ImpresarioInGenreQueryWindow extends JFrame {
             label.setHorizontalAlignment(SwingConstants.CENTER);
             add(label, BorderLayout.NORTH);
 
-            genreSelector = new Selector("Жанр", GetUtilities.getGenres());
+            genreSelector = new Selector("Жанр", GetUtilities.getNamesMap("genre", "id", "name"));
             add(genreSelector.getPanel(), BorderLayout.CENTER);
 
             DialogButtonsPanel dialogButtonsPanel = new DialogButtonsPanel();

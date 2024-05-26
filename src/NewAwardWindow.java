@@ -1,19 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
-import java.util.HashMap;
 
 public class NewAwardWindow extends JFrame {
     JTextField nameField;
-    JComboBox<String> eventSelector;
-
-    JComboBox<String> artistSelector;
-
-    HashMap<String, Integer> artists;
-    HashMap<String, Integer> events;
-
-    JPanel buttonsPanel;
-
+    Selector artists;
+    Selector events;
 
     public NewAwardWindow() {
         super("New event");
@@ -25,8 +17,8 @@ public class NewAwardWindow extends JFrame {
             JPanel mainPanel = new JPanel(new GridBagLayout());
 
             try {
-                artists = GetUtilities.getNames("artist");
-                events = GetUtilities.getCompetitions();
+                artists = new Selector("Артист", GetUtilities.getNamesMap("artist", "id", "last_name", "first_name", "surname"));
+                events = new Selector("Мероприятие", GetUtilities.getNamesMap("event", "id", "name"));
             }
             catch (SQLException e) {
                 JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
@@ -38,7 +30,6 @@ public class NewAwardWindow extends JFrame {
             gbc.gridy = 0;
             gbc.gridwidth = 1;
             gbc.fill = GridBagConstraints.HORIZONTAL;
-            gbc.weightx = 1;
             gbc.weighty = 1;
 
 
@@ -48,49 +39,27 @@ public class NewAwardWindow extends JFrame {
 
             gbc.gridx = 1;
             gbc.weightx = 1;
-            gbc.gridwidth = 2;
             nameField = new JTextField();
             mainPanel.add(nameField, gbc);
 
             gbc.gridx = 0;
-            gbc.gridy = 1;
-            gbc.gridwidth = 1;
+            gbc.gridy++;
 
-            JLabel placeLabel = new JLabel("Название мероприятия");
-            placeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-            mainPanel.add(placeLabel, gbc);
 
-            gbc.gridx = 1;
             gbc.gridwidth = 2;
-            eventSelector = new JComboBox<>(events.keySet().toArray(new String[0]));
-            mainPanel.add(eventSelector, gbc);
+            mainPanel.add(events.getPanel(), gbc);
 
-            gbc.gridx = 0;
-            gbc.gridy = 2;
-            gbc.gridwidth = 1;
-            JLabel organizerLabel = new JLabel("ФИО артиста");
-            organizerLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-            mainPanel.add(organizerLabel, gbc);
-
-            gbc.gridx = 1;
             gbc.gridwidth = 2;
-            artistSelector = new JComboBox<>(artists.keySet().toArray(new String[0]));
-            mainPanel.add(artistSelector, gbc);
 
-            buttonsPanel = new JPanel();
-            buttonsPanel.add(Box.createHorizontalGlue());
-            buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
-            JButton cancelButton = new JButton("отмена");
-            cancelButton.addActionListener(e -> dispose());
-            buttonsPanel.add(cancelButton);
+            gbc.gridy++;
+            mainPanel.add(artists.getPanel(), gbc);
 
-            gbc.gridx = 2;
-            JButton okButton = new JButton("добавить");
-            okButton.addActionListener(e -> applyChanges());
-            buttonsPanel.add(okButton);
+            DialogButtonsPanel dialogButtonsPanel = new DialogButtonsPanel();
+            dialogButtonsPanel.cancelButton.addActionListener(e->dispose());
+            dialogButtonsPanel.okButton.addActionListener(e->applyChanges());
 
             add(mainPanel, BorderLayout.CENTER);
-            add(buttonsPanel, BorderLayout.SOUTH);
+            add(dialogButtonsPanel, BorderLayout.SOUTH);
 
             pack();
             setVisible(true);
@@ -104,9 +73,9 @@ public class NewAwardWindow extends JFrame {
         try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
             String insertSQL = "INSERT INTO awards (artist_id, event_id, name) VALUES (?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(insertSQL);
-            int artist_id = artists.get((String)artistSelector.getSelectedItem());
+            int artist_id = artists.getSelectedID();
             statement.setInt(1, artist_id);
-            int event_id = events.get((String)eventSelector.getSelectedItem());
+            int event_id = events.getSelectedID();
             statement.setInt(2, event_id);
             statement.setString(3, nameField.getText());
 

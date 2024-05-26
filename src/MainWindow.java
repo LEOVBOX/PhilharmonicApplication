@@ -147,7 +147,7 @@ public class MainWindow extends JFrame {
         gbc.gridy = 0;
 
         JButton editArtistButton = new JButton("Редактировать артиста");
-        editArtistButton.addActionListener(e-> new EditPersonForm("artist"));
+        editArtistButton.addActionListener(e -> new EditPersonForm("artist"));
         editMenuPanel.setBackground(Color.GRAY);
         editMenuPanel.add(editArtistButton, gbc);
 
@@ -157,8 +157,8 @@ public class MainWindow extends JFrame {
         editMenuPanel.add(newImpresarioButton, gbc);
 
         gbc.gridy++;
-        JButton newGenreButton = new JButton("Добавить новый жанр");
-        newGenreButton.addActionListener(e -> new NewGenreWindow());
+        JButton newGenreButton = new JButton("Редактировать жанр");
+        newGenreButton.addActionListener(e -> new EditGenreWindow("genre"));
         editMenuPanel.add(newGenreButton, gbc);
 
         gbc.gridy++;

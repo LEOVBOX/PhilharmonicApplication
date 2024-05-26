@@ -74,7 +74,7 @@ public class EventsInTimeQueryWindow extends JFrame {
                 mainPanel.repaint();
             });
 
-            impresarioSelector = new Selector("Организатор", GetUtilities.getNames("impresario"));
+            impresarioSelector = new Selector("Организатор", GetUtilities.getNamesMap("impresario", "id", "last_name", "first_name", "surname"));
             impresarioPanel = impresarioSelector.getPanel();
 
             DialogButtonsPanel dialogButtonsPanel = new DialogButtonsPanel();

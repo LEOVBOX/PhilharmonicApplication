@@ -2,120 +2,35 @@ import java.sql.*;
 import java.util.HashMap;
 
 public class GetUtilities {
-    public static HashMap<String, Integer> getEventTypes() throws SQLException{
-        HashMap<String, Integer> genres = new HashMap<>();
+
+    public static HashMap<String, Integer> getNamesMap(String tableName, String idLabel, String ... nameLabels) throws SQLException{
+        HashMap<String, Integer> names = new HashMap<>();
+        String preparedSQL = "SELECT %s, %s FROM %s";
+        String nameLabel = String.join(", ", nameLabels);
+        String sql = String.format(preparedSQL, idLabel, nameLabel, tableName);
+
         try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
             Statement statement = connection.createStatement();
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM event_type");
-
-            while (resultSet.next()) {
-                Integer id = resultSet.getInt("type_id");
-                String name = resultSet.getString("type_name");
-                genres.put(name, id);
-            }
-
-        }
-
-        return genres;
-    }
-    public static HashMap<String, Integer> getNames(String tableName) throws SQLException {
-        HashMap<String, Integer> names = new HashMap<>();
-        String preparedSQL = "SELECT * FROM %s";
-        String sql = String.format(preparedSQL, tableName);
-        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password);
-            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = statement.executeQuery(sql)) {
                 while (resultSet.next()) {
-                    Integer id = resultSet.getInt("id");
-                    String name = resultSet.getString("last_name");
-                    name = name + " " + resultSet.getString("first_name");
-                    name = name + " " + resultSet.getString("surname");
+                    Integer id = resultSet.getInt(idLabel);
+                    StringBuilder name = new StringBuilder();
+                    for (int i = 0; i < nameLabels.length; i++) {
+                        name.append(resultSet.getString(nameLabels[i]));
+                        if (i != nameLabels.length - 1)
+                            name.append(" ");
+                    }
 
-                    names.put(name, id);
-
+                    names.put(name.toString(), id);
                 }
             }
-
         }
+
         return names;
     }
 
-    public static HashMap<String, Integer> getGenres() throws SQLException {
-        HashMap<String, Integer> genres = new HashMap<>();
-        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
-            Statement statement = connection.createStatement();
-
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM genre");
-
-            while (resultSet.next()) {
-                Integer id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                genres.put(name, id);
-            }
-
-        }
-
-        return genres;
-    }
-
-    public static HashMap<String, Integer> getBuildingTypes() throws SQLException {
-        HashMap<String, Integer> types = new HashMap<>();
-        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
-            Statement statement = connection.createStatement();
-
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM building_type");
-
-            while (resultSet.next()) {
-                Integer id = resultSet.getInt("type_id");
-                String name = resultSet.getString("type_label");
-                types.put(name, id);
-            }
-
-        }
-
-        return types;
-    }
-
-    public static HashMap<String, Integer> getEvents() throws SQLException {
-        HashMap<String, Integer> events = new HashMap<>();
-        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
-            Statement statement = connection.createStatement();
-
-            ResultSet resultSet = statement.executeQuery("SELECT id, name FROM event");
-
-            while (resultSet.next()) {
-                Integer id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                events.put(name, id);
-            }
-
-        }
-
-        return events;
-    }
-
-    public static HashMap<String, Integer> getBuildingNames() throws SQLException {
-        HashMap<String, Integer> buildings = new HashMap<>();
-        try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)){
-            Statement statement = connection.createStatement();
-
-            ResultSet resultSet = statement.executeQuery("SELECT id, name, address FROM building");
-
-            while (resultSet.next()) {
-                Integer id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                name += " " + resultSet.getString("address");
-
-                buildings.put(name, id);
-            }
-        }
-        return buildings;
-    }
-
-    public static HashMap<String, Integer> getCompetitions() throws SQLException {
+    public static HashMap<String, Integer> getCompetitionsMap() throws SQLException {
         HashMap<String, Integer> competitions = new HashMap<>();
         try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password)) {
             Statement statement = connection.createStatement();

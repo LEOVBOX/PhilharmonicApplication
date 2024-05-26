@@ -17,7 +17,7 @@ public class PrizersQueryWindow extends JFrame {
             label.setHorizontalAlignment(SwingConstants.CENTER);
             add(label, BorderLayout.NORTH);
 
-            competitionSelector = new Selector("Конкурс", GetUtilities.getCompetitions());
+            competitionSelector = new Selector("Конкурс", GetUtilities.getCompetitionsMap());
             add(competitionSelector.getPanel(), BorderLayout.CENTER);
 
 

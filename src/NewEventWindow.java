@@ -21,9 +21,9 @@ public class NewEventWindow extends JFrame {
             setLayout(new BorderLayout());
             JPanel mainPanel = new JPanel(new GridBagLayout());
 
-            placeSelector = new Selector("Место проведения", GetUtilities.getBuildingNames());
-            organizerSelector = new Selector("Организатор", GetUtilities.getNames("impresario"));
-            typeSelector = new Selector("Тип мероприятия", GetUtilities.getEventTypes());
+            placeSelector = new Selector("Место проведения", GetUtilities.getNamesMap("building", "id", "name", "address"));
+            organizerSelector = new Selector("Организатор", GetUtilities.getNamesMap("impresario", "id", "last_name", "first_name", "surname"));
+            typeSelector = new Selector("Тип мероприятия", GetUtilities.getNamesMap("event_type", "type_id", "name"));
 
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;

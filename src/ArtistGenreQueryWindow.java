@@ -16,7 +16,7 @@ public class ArtistGenreQueryWindow extends JFrame {
             label.setHorizontalAlignment(SwingConstants.CENTER);
             add(label, BorderLayout.NORTH);
 
-            genres = new Selector("Жанр", GetUtilities.getGenres());
+            genres = new Selector("Жанр", GetUtilities.getNamesMap("genre", "id", "name"));
             add(genres.getPanel(), BorderLayout.CENTER);
 
 

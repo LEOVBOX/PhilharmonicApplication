@@ -21,7 +21,7 @@ public class MultipleGenreArtistQueryWindow extends JFrame {
     public MultipleGenreArtistQueryWindow() {
         super("Multiple-genre artist query");
         try {
-            genresMap = GetUtilities.getGenres();
+            genresMap = GetUtilities.getNamesMap("genre", "id", "name");
             setPreferredSize(new Dimension(400, 200));
             setResizable(true);
             setLocation(0, 0);

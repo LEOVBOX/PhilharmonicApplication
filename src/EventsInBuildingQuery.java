@@ -17,7 +17,7 @@ public class EventsInBuildingQuery extends JFrame {
             label.setHorizontalAlignment(SwingConstants.CENTER);
             add(label, BorderLayout.NORTH);
 
-            buildingSelector = new Selector("Конкурс", GetUtilities.getBuildingNames());
+            buildingSelector = new Selector("Сооружение", GetUtilities.getNamesMap("building", "id", "name", "address"));
             add(buildingSelector.getPanel(), BorderLayout.CENTER);
 
             DialogButtonsPanel dialogButtonsPanel = new DialogButtonsPanel();

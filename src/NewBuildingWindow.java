@@ -33,7 +33,7 @@ public class NewBuildingWindow extends JFrame {
             setLocation(0, 0);
             setDefaultCloseOperation(EXIT_ON_CLOSE);
             setLayout(new BorderLayout());
-            buildingTypes = GetUtilities.getBuildingTypes();
+            buildingTypes = GetUtilities.getNamesMap("building_type", "type_id", "type_label");
             mainPanel = new JPanel(new GridBagLayout());
 
 

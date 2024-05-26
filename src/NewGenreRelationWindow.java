@@ -19,12 +19,12 @@ public class NewGenreRelationWindow extends JFrame {
             setLayout(new BorderLayout());
             setLayout(new BorderLayout());
             try {
-                genres = new Selector("Выберите жанр", GetUtilities.getGenres());
+                genres = new Selector("Выберите жанр", GetUtilities.getNamesMap("genre","id", "name"));
                 if (isImpresario) {
-                    names = new Selector("Выберете импресарио", GetUtilities.getNames("impresario"));
+                    names = new Selector("Выберете импресарио", GetUtilities.getNamesMap("impresario", "id", "last_name", "first_name", "surname"));
                 }
                 else {
-                    names = new Selector("Выберете артиста", GetUtilities.getNames("artist"));
+                    names = new Selector("Выберете артиста", GetUtilities.getNamesMap("artist", "id", "last_name", "first_name", "surname"));
                 }
 
 

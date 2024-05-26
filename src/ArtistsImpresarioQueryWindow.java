@@ -16,7 +16,7 @@ public class ArtistsImpresarioQueryWindow extends JFrame {
             label.setHorizontalAlignment(SwingConstants.CENTER);
             add(label, BorderLayout.NORTH);
 
-            impresarioSelector = new Selector("Импресарио", GetUtilities.getNames("impresario"));
+            impresarioSelector = new Selector("Импресарио", GetUtilities.getNamesMap("impresario", "id", "last_name", "first_name", "surname"));
             add(impresarioSelector.getPanel(), BorderLayout.CENTER);
 
 

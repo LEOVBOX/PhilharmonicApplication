@@ -90,10 +90,9 @@ public class EditPersonForm extends JFrame {
             setLocation(0, 0);
             setDefaultCloseOperation(HIDE_ON_CLOSE);
 
-
             initBottomPanel();
             initConfirmButtonPanel();
-            entitySelector = new Selector("Выбор персоны", GetUtilities.getNames(tableName));
+            entitySelector = new Selector("Выбор персоны", GetUtilities.getNamesMap(tableName, "id", "last_name", "first_name", "surname"));
 
             initSelectPanel();
             initEditPanel();
