@@ -80,7 +80,7 @@ public class EditPersonForm extends JFrame {
     }
 
     public EditPersonForm(String tableName) {
-        super();
+        super("Edit " + tableName);
         this.tableName = tableName;
         try {
             setLayout(new BorderLayout());
@@ -93,7 +93,7 @@ public class EditPersonForm extends JFrame {
 
             initBottomPanel();
             initConfirmButtonPanel();
-            entitySelector = new Selector("Выбор артиста", GetUtilities.getNames("artist"));
+            entitySelector = new Selector("Выбор персоны", GetUtilities.getNames(tableName));
 
             initSelectPanel();
             initEditPanel();
@@ -109,7 +109,8 @@ public class EditPersonForm extends JFrame {
     }
 
     public void openEditPanel() {
-        String sql = "SELECT first_name, last_name, surname FROM artist WHERE id = ?";
+        String preparedSQL = "SELECT first_name, last_name, surname FROM %s WHERE id = ?";
+        String sql = String.format(preparedSQL, tableName);
         try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password);
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, entitySelector.getSelectedID());
@@ -146,18 +147,17 @@ public class EditPersonForm extends JFrame {
     }
 
     private void applyChanges() {
-        String sql = "UPDATE ? SET first_name = ?, last_name = ?, surname = ? WHERE id = ?";
-
+        String preparedSQL = "UPDATE %s SET first_name = ?, last_name = ?, surname = ? WHERE id = ?";
+        String sql = String.format(preparedSQL, tableName);
         try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password);
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, tableName);
-            statement.setString(2, firstName.getText());
-            statement.setString(3, lastName.getText());
-            statement.setString(4, surname.getText());
-            statement.setInt(5, entitySelector.getSelectedID());
+            statement.setString(1, firstName.getText());
+            statement.setString(2, lastName.getText());
+            statement.setString(3, surname.getText());
+            statement.setInt(4, entitySelector.getSelectedID());
 
             statement.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Артист успешно изменен");
+            JOptionPane.showMessageDialog(this, "Запись успешно изменена");
             dispose();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "При выполнении запроса произошла ошибка\n"
@@ -167,7 +167,8 @@ public class EditPersonForm extends JFrame {
 
     private void delete() {
 
-        String sql = "DELETE FROM artist WHERE id = ?";
+        String preparedSQL = "DELETE FROM %s WHERE id = ?";
+        String sql = String.format(preparedSQL, tableName);
         try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password);
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
