@@ -158,17 +158,17 @@ public class MainWindow extends JFrame {
 
         gbc.gridy++;
         JButton newGenreButton = new JButton("Редактировать жанр");
-        newGenreButton.addActionListener(e -> new EditGenreWindow("genre"));
+        newGenreButton.addActionListener(e -> new EditOneNameWindow("genre", "id", "name", "Жанр"));
         editMenuPanel.add(newGenreButton, gbc);
 
         gbc.gridy++;
-        JButton newEventTypeButton = new JButton("Добавить новый тип мероприятия");
-        newEventTypeButton.addActionListener(e -> new NewEventTypeWindow());
+        JButton newEventTypeButton = new JButton("Редактировать тип мероприятия");
+        newEventTypeButton.addActionListener(e -> new EditOneNameWindow("event_type", "type_id", "name", "Тип мероприятия"));
         editMenuPanel.add(newEventTypeButton, gbc);
 
         gbc.gridy++;
-        JButton newEventButton = new JButton("Добавить новое мероприятие");
-        newEventButton.addActionListener(e -> new NewEventWindow());
+        JButton newEventButton = new JButton("Редактировать мероприятие");
+        newEventButton.addActionListener(e -> new EditEventWindow());
         editMenuPanel.add(newEventButton, gbc);
 
         gbc.gridy++;

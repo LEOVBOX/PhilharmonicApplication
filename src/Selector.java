@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.util.HashMap;
+import java.util.Map;
 
 // Implements drop-down menu for {Integer id: String value} options
 public class Selector {
@@ -38,5 +39,19 @@ public class Selector {
         selectorPanel.add(selector);
 
         return selectorPanel;
+    }
+
+    // Функция для получения ключа по значению из HashMap<String, Integer>
+    public static String getKeyByValue(HashMap<String, Integer> map, Integer value) {
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            if (entry.getValue().equals(value)) {
+                return entry.getKey();
+            }
+        }
+        return null; // Возвращаем null, если ключ не найден
+    }
+
+    public void setSelectedID(Integer id) {
+        selector.setSelectedItem(getKeyByValue(map, id));
     }
 }
