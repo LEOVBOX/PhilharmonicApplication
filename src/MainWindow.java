@@ -182,8 +182,8 @@ public class MainWindow extends JFrame {
         editMenuPanel.add(artistGenreButton, gbc);
 
         gbc.gridy++;
-        JButton workWithButton = new JButton("Создать связь атрист-импресарио");
-        workWithButton.addActionListener(e -> new ImpresarioArtistWindow());
+        JButton workWithButton = new JButton("Удалить свзяь импресарио-артист");
+        workWithButton.addActionListener(e -> new DeleteImpresarioArtistWindow());
         editMenuPanel.add(workWithButton, gbc);
 
         gbc.gridy++;
