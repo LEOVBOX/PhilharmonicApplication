@@ -172,13 +172,13 @@ public class MainWindow extends JFrame {
         editMenuPanel.add(newEventButton, gbc);
 
         gbc.gridy++;
-        JButton impresarioGenreButton = new JButton("Импресарио-жанр");
-        impresarioGenreButton.addActionListener(e -> new NewGenreRelationWindow("Жанр-импресарио", true));
+        JButton impresarioGenreButton = new JButton("Удалить жанр импресарио");
+        impresarioGenreButton.addActionListener(e -> new DeleteImpresarioGenreWindow());
         editMenuPanel.add(impresarioGenreButton, gbc);
 
         gbc.gridy++;
-        JButton artistGenreButton = new JButton("Артист-жанр");
-        artistGenreButton.addActionListener(e -> new NewGenreRelationWindow("Жанр-артист", false));
+        JButton artistGenreButton = new JButton("Удалить жанр артиста");
+        artistGenreButton.addActionListener(e -> new DeleteArtistGenreWindow());
         editMenuPanel.add(artistGenreButton, gbc);
 
         gbc.gridy++;
