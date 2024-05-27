@@ -197,8 +197,8 @@ public class MainWindow extends JFrame {
         editMenuPanel.add(newAwardButton, gbc);
 
         gbc.gridy++;
-        JButton addArtistToEventButton = new JButton("Добавить артиста на мероприятие");
-        addArtistToEventButton.addActionListener(e -> new NewArtistEventWindow());
+        JButton addArtistToEventButton = new JButton("Удалить артиста с мероприятия");
+        addArtistToEventButton.addActionListener(e -> new DeleteArtistFromEventWindow());
         editMenuPanel.add(addArtistToEventButton, gbc);
 
         editPanel.add(editMenuPanel, BorderLayout.CENTER);
