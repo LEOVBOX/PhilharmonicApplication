@@ -192,8 +192,8 @@ public class MainWindow extends JFrame {
         editMenuPanel.add(newBuildingButton, gbc);
 
         gbc.gridy++;
-        JButton newAwardButton = new JButton("Добавить новую награду");
-        newAwardButton.addActionListener(e -> new NewAwardWindow());
+        JButton newAwardButton = new JButton("Редактировать награду");
+        newAwardButton.addActionListener(e -> new EditAwardWindow());
         editMenuPanel.add(newAwardButton, gbc);
 
         gbc.gridy++;
