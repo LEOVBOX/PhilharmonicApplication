@@ -109,29 +109,29 @@ public abstract class BuildingForm extends JFrame {
     abstract void initMainButtonPanel();
 
     protected void showUniqueParamsPanel(String selectedType, Integer building_id) throws SQLException {
-        HashMap<String, String> buildingParams;
+        HashMap<String, String> buildingParams = null;
         switch (selectedType) {
             case "Театр" -> {
-                if (theatreParamsPanel == null || building_id != null) {
-                        buildingParams = getTheatreParams(building_id);
-                    theatreParamsPanel = new TheatreParamsPanel(buildingParams);
+                if (building_id != null) {
+                    buildingParams = getTheatreParams(building_id);
                 }
+                theatreParamsPanel = new TheatreParamsPanel(buildingParams);
 
                 typeParamsPanel = theatreParamsPanel;
             }
             case "Кинотеатр" -> {
-                if (cinemaParamsPanel == null || building_id != null) {
+                if (building_id != null) {
                     buildingParams = getCinemaParams(building_id);
-                    cinemaParamsPanel = new CinemaParamsPanel(buildingParams);
                 }
+                cinemaParamsPanel = new CinemaParamsPanel(buildingParams);
 
                 typeParamsPanel = cinemaParamsPanel;
             }
             case "Эстрада" -> {
-                if (estradeParamsPanel == null || building_id != null) {
+                if (building_id != null) {
                     buildingParams = getEstradeParams(building_id);
-                    estradeParamsPanel = new EstradeParamsPanel(buildingParams);
                 }
+                estradeParamsPanel = new EstradeParamsPanel(buildingParams);
 
                 typeParamsPanel = estradeParamsPanel;
             }
