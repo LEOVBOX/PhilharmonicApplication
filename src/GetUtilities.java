@@ -35,17 +35,19 @@ public class GetUtilities {
         try (Connection connection = DriverManager.getConnection(ConnectionConfig.url, ConnectionConfig.username, ConnectionConfig.password);
              Statement statement = connection.createStatement()) {
 
-            ResultSet resultSet = statement.executeQuery("""
+            try (ResultSet resultSet = statement.executeQuery("""
                     select id, name from event\s
                     join event_type on event.type_id = event_type.type_id\s
-                    where event_type.type_name = 'Конкурс'""");
+                    where event_type.type_name = 'Конкурс'""")) {
+                while (resultSet.next()) {
+                    Integer id = resultSet.getInt("id");
+                    String name = resultSet.getString("name");
 
-            while (resultSet.next()) {
-                Integer id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-
-                competitions.put(name, id);
+                    competitions.put(name, id);
+                }
             }
+
+
         }
         return competitions;
     }
