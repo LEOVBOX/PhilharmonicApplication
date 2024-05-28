@@ -53,7 +53,7 @@ public class BuildingsEventsWindow extends JFrame {
         Date startDate = timeRangeSelector.getStartDate();
         Date endDate = timeRangeSelector.getEndDate();
         String prepareSQL = """
-                        SELECT building.id, building.name, date, event.name FROM building LEFT JOIN "event" ON
+                        SELECT building.id, building.name, date, event.name FROM building JOIN "event" ON
                         building.id = "event".place_id AND date between '%s' AND '%s'
                 """;
 

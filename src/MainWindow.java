@@ -351,8 +351,4 @@ public class MainWindow extends JFrame {
             throw new RuntimeException(e);
         }
     }
-
-    public static void main(String[] args) {
-        MainWindow mainWindow = new MainWindow();
-    }
 }

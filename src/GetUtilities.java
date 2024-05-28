@@ -46,8 +46,6 @@ public class GetUtilities {
                     competitions.put(name, id);
                 }
             }
-
-
         }
         return competitions;
     }
